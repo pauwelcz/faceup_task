@@ -9,7 +9,9 @@ export class RecordResolver {
   constructor(private readonly recordService: RecordService) {}
 
   @Mutation(() => Record)
-  createRecord(@Args('createRecordInput') createRecordInput: CreateRecordInput) {
+  createRecord(
+    @Args('createRecordInput') createRecordInput: CreateRecordInput,
+  ) {
     return this.recordService.create(createRecordInput);
   }
 
@@ -24,8 +26,10 @@ export class RecordResolver {
   }
 
   @Mutation(() => Record)
-  updateRecord(@Args('updateRecordInput') updateRecordInput: UpdateRecordInput) {
-    return this.recordService.update(updateRecordInput.id, updateRecordInput);
+  updateRecord(
+    @Args('updateRecordInput') updateRecordInput: UpdateRecordInput,
+  ) {
+    return this.recordService.update(updateRecordInput);
   }
 
   @Mutation(() => Record)
