@@ -1,8 +1,9 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { RecordService } from './record.service';
-import { Record } from './entities/record.entity';
 import { CreateRecordInput } from './dto/create-record.input';
 import { UpdateRecordInput } from './dto/update-record.input';
+import { RecordsAndCount } from './dto/records.output';
+import { Record } from './dto/record.output';
 
 @Resolver(() => Record)
 export class RecordResolver {
@@ -15,8 +16,8 @@ export class RecordResolver {
     return this.recordService.create(createRecordInput);
   }
 
-  @Query(() => [Record], { name: 'records' })
-  findAll() {
+  @Query(() => RecordsAndCount, { name: 'records' })
+  findAll(): Promise<RecordsAndCount> {
     return this.recordService.findAll();
   }
 
