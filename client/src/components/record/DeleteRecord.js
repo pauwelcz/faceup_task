@@ -13,23 +13,6 @@ export const REMOVE_RECORD_MUTATION = gql`
     }
 `;
 
-const RECORDS_QUERY = gql`
-  query AllRecords($limit: Int!, $offset: Int!) {
-    records(findRecordsArgs: {limit: $limit, offset: $offset}) {
-      totalNumber
-      records {
-        id
-        age
-        name
-        title
-        note
-        created_at
-        updated_at
-      }
-    }
-  }
-`;
-
 function DeleteRecord(props) {
   const { id, refetch } = props;
   const [open, setOpen] = useState(false);
@@ -43,7 +26,6 @@ function DeleteRecord(props) {
   };
 
   const [deleteRecord] = useMutation(REMOVE_RECORD_MUTATION);
-
 
   const handleDelete = async (id) => {
     await deleteRecord({variables: {id}});
