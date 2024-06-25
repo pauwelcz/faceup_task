@@ -11,8 +11,8 @@ import Header from './Header';
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 
 const RECORDS_QUERY = gql`
-  query AllRecords {
-    records(findRecordsArgs: {}) {
+  query AllRecords($limit: Int!, $offset: Int!) {
+    records(findRecordsArgs: {limit: $limit, offset: $offset}) {
       totalNumber
       records {
         id
@@ -36,10 +36,14 @@ export const REMOVE_RECORD_MUTATION = gql`
 `;
 
 function RecordList() {
-  // TODO - use pagination
-  const { loading, error, data } = useQuery(RECORDS_QUERY);
-  const [deleteRecord] = useMutation(REMOVE_RECORD_MUTATION);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
 
+  // TODO - use pagination
+  const { loading, error, data } = useQuery(RECORDS_QUERY, { variables: { limit, offset: page - 1}});
+  const [deleteRecord] = useMutation(REMOVE_RECORD_MUTATION, {
+    refetchQueries: [{ query: RECORDS_QUERY, variables: {limit, offset: page - 1}}]
+  });
 
   if (loading) return 'Loading...';
   if (error) return `Error! ${error}`;
@@ -74,7 +78,6 @@ function RecordList() {
                 <Grid item xs={1}> 
                   <Button startIcon={<DeleteIcon />} onClick={() => {
                     deleteRecord({ variables: { id: record.id } });
-                    alert('deleted succesfully');
                     // TODO - confirmation 
                     // TODO - refresh after delete
                   }} />
@@ -84,7 +87,7 @@ function RecordList() {
         ))}
         </Paper>
         <Paper elevation={3} style={{margin: 5, padding: 2, backgroundColor: '#02ecfa' }}>
-          <Pagination count={Math.ceil(data.records.totalNumber / 25)} />
+          <Pagination count={Math.ceil(data.records.totalNumber / limit)} />
         </Paper>
       </Paper>
     </Paper>
