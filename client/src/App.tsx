@@ -1,9 +1,9 @@
 import './App.css';
+import React, { FC } from 'react';
 import RecordList from './components/RecordsList';
 
 
-function App() {
-
+const App: FC = () => {
   return (
     <div className="App">
       <RecordList />

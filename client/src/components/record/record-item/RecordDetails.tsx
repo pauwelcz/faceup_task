@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Paper } from '@mui/material';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
+import { Record } from '../../../types/record-type';
 
-function RecordDetails(props) {
+
+type RecordDetailsProps = {
+  record: Record;
+};
+
+const RecordDetails: FC<RecordDetailsProps> = (props) => {
   const {name, title, created_at, age, note } = props.record;
 
   const [open, setOpen] = useState(false);

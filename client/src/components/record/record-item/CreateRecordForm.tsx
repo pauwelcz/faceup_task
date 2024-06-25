@@ -1,59 +1,65 @@
 import { useMutation } from '@apollo/client';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import React, { useState } from 'react';
-import EditIcon from '@mui/icons-material/Edit';
-import { UPDATE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
+import React, { useState, FC } from 'react';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { CREATE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
 
-function UpdateRecordForm(props) {
-  const {record, refetch} = props;
+type CreateRecordFormProps = {
+  refetch: () => void;
+};
 
-  const [id] = useState(record.id);
-  const [name, setName] = useState(record.name);
-  const [age, setAge] = useState(record.age);
-  const [title, setTitle] = useState(record.title);
-  const [note, setNote] = useState(record.note);
-
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
+  const { refetch } = props;
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const [title, setTitle] = useState('');
+  const [note, setNote] = useState('');
 
   const [nameError, setNameError] = useState('');
   const [titleError, setTitleError] = useState('');
   const [noteError, setNoteError] = useState('');
   const [ageError, setAgeError] = useState('');
 
-  const handleNameChange = (event) => {
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
     if (nameError) {
       setNameError('');
     }
   };
 
-  const handleTitleChange = (event) => {
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
     if (titleError) {
       setTitleError('');
     }
   };
 
-  const handleNoteChange = (event) => {
+  const handleNoteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNote(event.target.value);
     if (noteError) {
       setNoteError('');
     }
   };
 
-  const handleAgeChange = (event) => {
+  const handleAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAge(event.target.value);
     if (ageError) {
       setAgeError('');
     }
   };
 
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
   const handleClose = () => {
+    setAge('');
+    setName('');
+    setNote('');
+    setTitle('');
+
     setNameError('');
     setTitleError('');
     setAgeError('');
@@ -61,9 +67,10 @@ function UpdateRecordForm(props) {
     setOpen(false);
   };
 
-  const [updateRecord] = useMutation(UPDATE_RECORD_MUTATION);
 
-  const handleUpdate = async (variables) => {
+  const [createRecord] = useMutation(CREATE_RECORD_MUTATION);
+
+  const handleCreate = async (variables: { name: string; age: string | number; title: string; note: string; }) => {
     let valid = true;
 
     if (name === '') {
@@ -81,13 +88,14 @@ function UpdateRecordForm(props) {
       valid = false;
     }
 
-    if (parseInt(age) < 1 || age === '') {
+    if (parseInt(age) < 1 || isNaN(parseInt(age))) {
       setAgeError('Age must be filled and greater than 0');
       valid = false;
     }
 
     if (valid) {
-      await updateRecord({variables});
+      variables.age = parseInt(age);
+      await createRecord({variables});
       refetch();
       handleClose();
     }
@@ -95,12 +103,12 @@ function UpdateRecordForm(props) {
 
   return(
     <Grid item xs={1}> 
-      <Button startIcon={<EditIcon />} onClick={handleClickOpen} />
+      <Button startIcon={<AddCircleIcon />} onClick={handleClickOpen} />
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle><strong>Update record</strong></DialogTitle>
+        <DialogTitle><strong>Create new record</strong></DialogTitle>
         <DialogContent>
           <Grid container spacing={2} alignItems={'center'} xs={4} margin={4}>
-            <Grid margin={1} sx={4}>
+            <Grid margin={1}>
               <TextField 
                   required 
                   label='User name' 
@@ -110,7 +118,7 @@ function UpdateRecordForm(props) {
                   onChange={handleNameChange}
               />
             </Grid>
-            <Grid margin={1} sx={4}>
+            <Grid margin={1}>
               <TextField 
                 required 
                 label='User age' 
@@ -120,7 +128,7 @@ function UpdateRecordForm(props) {
                 onChange={handleAgeChange}
               />
             </Grid>
-            <Grid margin={1} sx={4}>
+            <Grid margin={1}>
               <TextField 
                 required 
                 label='Title' 
@@ -130,7 +138,7 @@ function UpdateRecordForm(props) {
                 onChange={handleTitleChange}
               />
             </Grid>
-            <Grid margin={1} sx={4}>
+            <Grid margin={1}>
               <TextField 
                 required 
                 label='Note' 
@@ -143,15 +151,15 @@ function UpdateRecordForm(props) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Grid sx={2}>
+          <Grid>
             <Button variant='contained' onClick={() => {
               handleClose();
             }}>Cancel</Button>
           </Grid>
-          <Grid sx={2}>
+          <Grid>
             <Button variant='contained' onClick={() => {
-              handleUpdate({ id, name, age: parseInt(age), note, title });
-            }}>Update</Button>
+              handleCreate({ name, age, note, title });
+            }}>Create</Button>
           </Grid>
         </DialogActions>
       </Dialog>
@@ -159,4 +167,4 @@ function UpdateRecordForm(props) {
   );
 }
 
-export default UpdateRecordForm;
+export default CreateRecordForm;
