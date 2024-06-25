@@ -38,6 +38,9 @@ export class RecordService {
     const recordsAndCount = await this.recordsRepository.findAndCount({
       take: limit,
       skip: offset,
+      order: {
+        created_at: 'DESC',
+      },
     });
     return {
       totalNumber: recordsAndCount[1],
