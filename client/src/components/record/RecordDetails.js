@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Paper } from '@mui/material';
 import Button from '@mui/material/Button';
+import SearchIcon from '@mui/icons-material/Search';
 
 function RecordDetails(props) {
   const {name, title, created_at, age, note } = props.record;
@@ -18,7 +19,7 @@ function RecordDetails(props) {
 
   return(
     <Grid item xs={1}> 
-      <Button onClick={handleClickOpen}>Details</Button>
+      <Button startIcon={<SearchIcon />} onClick={handleClickOpen} />
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Record details</DialogTitle>
         <DialogContent>
