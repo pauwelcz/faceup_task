@@ -1,7 +1,6 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteRecord from './record/DeleteRecord';
+import UpdateRecordForm from './record/UpdateRecordForm';
 import RecordDetails from './record/RecordDetails';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -24,9 +23,7 @@ function RecordItem(props) {
             {created_at}
           </Grid>
           <RecordDetails record={props.record} />
-          <Grid item xs={1}> 
-            <Button startIcon={<EditIcon />} />
-          </Grid>
+          <UpdateRecordForm record={props.record} />
           <DeleteRecord id={id} />
       </Grid>
     </Paper>
