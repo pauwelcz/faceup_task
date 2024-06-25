@@ -1,22 +1,35 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import InfoIcon from '@mui/icons-material/Info';
-
+import DeleteRecord from './record/DeleteRecord';
+import RecordDetails from './record/RecordDetails';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 
 function RecordItem(props) {
+  const {id, name, title, note, created_at} = props.record;
   return (
-    <div>
-      <li key={props.id}>
-        <strong>{props.name}</strong>: 
-        {props.title} 
-        {props.created_at} 
-        <Button variant="outlined" startIcon={<InfoIcon />}></Button>
-        <Button variant="outlined" startIcon={<EditIcon />}></Button>
-        <Button variant="outlined" startIcon={<DeleteIcon />}></Button>
-      </li>
-    </div>
+    <Paper style={{ margin: 1, backgroundColor: id % 2 === 0 ? '#afeaed' : '#97ebf0', elevation: 3, borderColor: 'black' }}>
+      <Grid container spacing={0.25} margin={1}>
+          <Grid item xs={2}>
+            <strong>{name} </strong>
+          </Grid>
+          <Grid item xs={2}>
+            <strong>{title}</strong>
+          </Grid>
+          <Grid item xs={3} textOverflow={'ellipsis'} whiteSpace={'nowrap'} overflow={'hidden'}>
+            {note}
+          </Grid>
+          <Grid item xs={2}>
+            {created_at}
+          </Grid>
+          <RecordDetails record={props.record} />
+          <Grid item xs={1}> 
+            <Button startIcon={<EditIcon />} />
+          </Grid>
+          <DeleteRecord id={id} />
+      </Grid>
+    </Paper>
   );
 }
 
