@@ -32,13 +32,13 @@ export const REMOVE_RECORD_MUTATION = gql`
 
 function RecordList() {
   // pagination
-  const [limit, setLimit] = useState(10);
+  const [limit] = useState(10);
   const [page, setPage] = useState(1);
 
   const handleChange = (event, value) => {
     setPage(value);
   };
-  const { loading, error, data } = useQuery(RECORDS_QUERY, { variables: { limit, offset: page - 1}});
+  const { loading, error, data } = useQuery(RECORDS_QUERY, { variables: { limit, offset: (page - 1) * limit}});
 
   if (loading) return 'Loading...';
   if (error) return `Error! ${error}`;
