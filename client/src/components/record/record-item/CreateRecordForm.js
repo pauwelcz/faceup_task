@@ -3,7 +3,7 @@ import { Button, Dialog, DialogContent, DialogTitle, TextField } from '@mui/mate
 import Grid from '@mui/material/Grid';
 import React, { useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { CREATE_RECORD_MUTATION } from '../../graphql/graphqlOperations';
+import { CREATE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
 
 function CreateRecordForm(props) {
   const { refetch } = props;

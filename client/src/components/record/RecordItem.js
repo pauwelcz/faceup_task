@@ -1,9 +1,9 @@
 import * as React from 'react';
-import DeleteRecord from './record/DeleteRecord';
-import UpdateRecordForm from './record/UpdateRecordForm';
-import RecordDetails from './record/RecordDetails';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import RecordDetails from './record-item/RecordDetails';
+import UpdateRecordForm from './record-item/UpdateRecordForm';
+import DeleteRecord from './record-item/DeleteRecord';
 
 function RecordItem(props) {
   const {refetch, record} = props;

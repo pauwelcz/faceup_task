@@ -3,8 +3,8 @@ import Paper from '@mui/material/Paper';
 import { useQuery } from "@apollo/client";
 import { Pagination } from '@mui/material';
 import Header from './Header';
-import RecordItem from './RecordItem';
 import { RECORDS_QUERY } from '../graphql/graphqlOperations';
+import RecordItem from './record/RecordItem';
 
 function RecordList() {
   // pagination

@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import { Dialog, DialogActions, DialogTitle } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useMutation } from "@apollo/client";
-import { REMOVE_RECORD_MUTATION } from '../../graphql/graphqlOperations';
+import { REMOVE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
 
 function DeleteRecord(props) {
   const { id, refetch } = props;

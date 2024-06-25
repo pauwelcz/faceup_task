@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import React from 'react';
-import CreateRecordForm from './record/CreateRecordForm';
+import CreateRecordForm from './record/record-item/CreateRecordForm';
 
 function Header(props) {
   const { refetch } = props;

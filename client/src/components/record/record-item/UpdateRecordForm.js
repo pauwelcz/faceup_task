@@ -3,7 +3,7 @@ import { Button, Dialog, DialogContent, DialogTitle, TextField } from '@mui/mate
 import Grid from '@mui/material/Grid';
 import React, { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-import { UPDATE_RECORD_MUTATION } from '../../graphql/graphqlOperations';
+import { UPDATE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
 
 function UpdateRecordForm(props) {
   const {record, refetch} = props;
