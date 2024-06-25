@@ -1,5 +1,7 @@
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import React from 'react';
+import CreateRecordForm from './record/CreateRecordForm';
 
 function Header() {
   return (
@@ -17,6 +19,7 @@ function Header() {
           <Grid item xs={2} > 
               <strong>Created</strong> 
           </Grid>
+          <CreateRecordForm />
         </Grid>
       </Paper>
   );
