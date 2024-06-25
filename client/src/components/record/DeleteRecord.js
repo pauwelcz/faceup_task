@@ -31,7 +31,7 @@ const RECORDS_QUERY = gql`
 `;
 
 function DeleteRecord(props) {
-  const { id } = props;
+  const { id, refetch } = props;
   const [open, setOpen] = useState(false);
 
   const handleDeleteConfirmationClickOpen = () => {
@@ -42,9 +42,15 @@ function DeleteRecord(props) {
     setOpen(false);
   };
 
-  const [deleteRecord] = useMutation(REMOVE_RECORD_MUTATION, {
-    refetchQueries: [{ query: RECORDS_QUERY, variables: {limit: 40, offset: 0}}]
-  });
+  const [deleteRecord] = useMutation(REMOVE_RECORD_MUTATION);
+
+
+  const handleDelete = async (id) => {
+    await deleteRecord({variables: {id}});
+
+    refetch();
+    handleDeleteConfirmationClose();
+  };
 
   return(
     <Grid item xs={1}>                   
@@ -54,8 +60,7 @@ function DeleteRecord(props) {
           <DialogActions>
             <Button onClick={handleDeleteConfirmationClose}>Cancel</Button>
             <Button onClick={() => {
-              deleteRecord({ variables: { id } });
-              handleDeleteConfirmationClose();
+              handleDelete(id);
             }} autoFocus>
               Delete
             </Button>

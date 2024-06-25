@@ -38,7 +38,7 @@ function RecordList() {
   const handleChange = (event, value) => {
     setPage(value);
   };
-  const { loading, error, data } = useQuery(RECORDS_QUERY, { variables: { limit, offset: (page - 1) * limit}});
+  const { loading, error, data, refetch } = useQuery(RECORDS_QUERY, { variables: { limit, offset: (page - 1) * limit}});
 
   if (loading) return 'Loading...';
   if (error) return `Error! ${error}`;
@@ -47,10 +47,10 @@ function RecordList() {
     <Paper style={{margin: 5, padding: 2, backgroundColor: "#97ebf0", border: 10, borderColor: "#FFF" }} >
       <h2>Records</h2>  
       <Paper style={{margin: 5, padding: 2, elevation: 3}} >
-        <Header />
+        <Header refetch={refetch} />
         <Paper style={{margin: 5, padding: 2, elevation: 3,backgroundColor: '#02ecfa'}} >
         {data.records.records.map((record) => (
-          <RecordItem record={record}/>
+          <RecordItem record={record} refetch={refetch}/>
         ))}
         </Paper>
         <Paper elevation={3} style={{margin: 5, padding: 2, backgroundColor: '#02ecfa' }}>

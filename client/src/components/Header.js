@@ -3,7 +3,8 @@ import Paper from '@mui/material/Paper';
 import React from 'react';
 import CreateRecordForm from './record/CreateRecordForm';
 
-function Header() {
+function Header(props) {
+  const { refetch } = props;
   return (
       <Paper style={{margin: 5, padding: 2, backgroundColor: '#02ecfa', borderColor: 'black'}} >
         <Grid container>
@@ -19,7 +20,7 @@ function Header() {
           <Grid item xs={2} > 
               <strong>Created</strong> 
           </Grid>
-          <CreateRecordForm />
+          <CreateRecordForm refetch={refetch}/>
         </Grid>
       </Paper>
   );

@@ -23,7 +23,8 @@ const CREATE_RECORD_MUTATION = gql`
   }
 `;
 
-function CreateRecordForm() {
+function CreateRecordForm(props) {
+  const { refetch } = props;
   const [name, setName] = useState('');
   const [age, setAge] = useState(0);
   const [title, setTitle] = useState('');
@@ -39,8 +40,15 @@ function CreateRecordForm() {
     setOpen(false);
   };
 
+
   const [createRecord] = useMutation(CREATE_RECORD_MUTATION);
 
+  const handleCreate = async (variables) => {
+    await createRecord({variables});
+
+    refetch();
+    handleClose();
+  };
   return(
     <Grid item xs={1}> 
       <Button startIcon={<AddCircleIcon />} onClick={handleClickOpen} />
@@ -75,8 +83,7 @@ function CreateRecordForm() {
             </Grid>
             <Grid sx={2}>
               <Button variant='contained' onClick={() => {
-                createRecord({variables: { name, age: parseInt(age), note, title }});
-                handleClose();
+                handleCreate({ name, age: parseInt(age), note, title });
               }}>Create</Button>
             </Grid>
           </Grid>

@@ -6,7 +6,8 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
 function RecordItem(props) {
-  const {id, name, title, note, created_at} = props.record;
+  const {refetch, record} = props;
+  const {id, name, title, note, created_at} = record;
   return (
     <Paper style={{ margin: 1, backgroundColor: id % 2 === 0 ? '#afeaed' : '#97ebf0', elevation: 3, borderColor: 'black' }}>
       <Grid container spacing={0.25} margin={1}>
@@ -23,8 +24,8 @@ function RecordItem(props) {
             {created_at}
           </Grid>
           <RecordDetails record={props.record} />
-          <UpdateRecordForm record={props.record} />
-          <DeleteRecord id={id} />
+          <UpdateRecordForm record={props.record} refetch={refetch} />
+          <DeleteRecord id={id} refetch={refetch} />
       </Grid>
     </Paper>
   );

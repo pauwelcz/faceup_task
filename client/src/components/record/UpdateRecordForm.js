@@ -31,7 +31,7 @@ const UPDATE_RECORD_MUTATION = gql`
 `;
 
 function UpdateRecordForm(props) {
-  const {record} = props;
+  const {record, refetch} = props;
 
   const [id] = useState(record.id);
   const [name, setName] = useState(record.name);
@@ -50,6 +50,13 @@ function UpdateRecordForm(props) {
   };
 
   const [updateRecord] = useMutation(UPDATE_RECORD_MUTATION);
+
+  const handleUpdate = async (variables) => {
+    await updateRecord({variables});
+
+    refetch();
+    handleClose();
+  };
 
   return(
     <Grid item xs={1}> 
@@ -85,8 +92,7 @@ function UpdateRecordForm(props) {
             </Grid>
             <Grid sx={2}>
               <Button variant='contained' onClick={() => {
-                updateRecord({variables: { id, name, age: parseInt(age), note, title }});
-                handleClose();
+                handleUpdate({ id, name, age: parseInt(age), note, title });
               }}>Update</Button>
             </Grid>
           </Grid>
