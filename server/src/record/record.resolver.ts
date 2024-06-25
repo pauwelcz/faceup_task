@@ -4,6 +4,7 @@ import { CreateRecordInput } from './dto/create-record.input';
 import { UpdateRecordInput } from './dto/update-record.input';
 import { RecordsAndCount } from './dto/records.output';
 import { Record } from './dto/record.output';
+import { FetchRecordsArgs } from './dto/find-records.input';
 
 @Resolver(() => Record)
 export class RecordResolver {
@@ -17,8 +18,10 @@ export class RecordResolver {
   }
 
   @Query(() => RecordsAndCount, { name: 'records' })
-  findAll(): Promise<RecordsAndCount> {
-    return this.recordService.findAll();
+  findAll(
+    @Args('findRecordsArgs') args: FetchRecordsArgs = { limit: 25, offset: 0 },
+  ): Promise<RecordsAndCount> {
+    return this.recordService.findAll(args);
   }
 
   @Query(() => Record, { name: 'record' })

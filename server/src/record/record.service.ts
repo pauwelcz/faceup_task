@@ -5,6 +5,7 @@ import { Record } from './entities/record.entity';
 import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RecordsAndCount } from './dto/records.output';
+import { FetchRecordsArgs } from './dto/find-records.input';
 
 @Injectable()
 export class RecordService {
@@ -32,8 +33,12 @@ export class RecordService {
     return savedRecord;
   }
 
-  async findAll(): Promise<RecordsAndCount> {
-    const recordsAndCount = await this.recordsRepository.findAndCount();
+  async findAll(args: FetchRecordsArgs): Promise<RecordsAndCount> {
+    const { offset, limit } = args;
+    const recordsAndCount = await this.recordsRepository.findAndCount({
+      take: limit,
+      skip: offset,
+    });
     return {
       totalNumber: recordsAndCount[1],
       records: recordsAndCount[0],
