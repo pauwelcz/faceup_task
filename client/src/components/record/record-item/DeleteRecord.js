@@ -10,11 +10,11 @@ function DeleteRecord(props) {
   const { id, refetch } = props;
   const [open, setOpen] = useState(false);
 
-  const handleDeleteConfirmationClickOpen = () => {
+  const handleOpen = () => {
     setOpen(true);
   };
 
-  const handleDeleteConfirmationClose = () => {
+  const handleClose = () => {
     setOpen(false);
   };
 
@@ -24,16 +24,16 @@ function DeleteRecord(props) {
     await deleteRecord({variables: {id}});
 
     refetch();
-    handleDeleteConfirmationClose();
+    handleClose();
   };
 
   return(
     <Grid item xs={1}>                   
-      <Button startIcon={<DeleteIcon /> } onClick={handleDeleteConfirmationClickOpen}/>
-        <Dialog open={open} onClose={handleDeleteConfirmationClose}>
+      <Button startIcon={<DeleteIcon /> } onClick={handleOpen}/>
+        <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Are you sure you want to delete this record?</DialogTitle>
           <DialogActions>
-            <Button onClick={handleDeleteConfirmationClose}>Cancel</Button>
+            <Button onClick={handleClose}>Cancel</Button>
             <Button onClick={() => {
               handleDelete(id);
             }} autoFocus>
