@@ -1,4 +1,3 @@
-import { Paper } from '@mui/material';
 import './App.css';
 import RecordList from './components/RecordsList';
 
