@@ -2,6 +2,7 @@ import { gql, useMutation } from '@apollo/client';
 import { Button, Dialog, DialogContent, DialogTitle, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { useState } from 'react';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const CREATE_RECORD_MUTATION = gql`
   mutation CreateRecord(
@@ -42,38 +43,38 @@ function CreateRecordForm() {
 
   return(
     <Grid item xs={1}> 
-      <Button onClick={handleClickOpen}>Create new record</Button>
+      <Button startIcon={<AddCircleIcon />} onClick={handleClickOpen} />
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Creating new record</DialogTitle>
+        <DialogTitle><strong>Create new record</strong></DialogTitle>
         <DialogContent>
           <Grid container spacing={2} alignItems={'center'} xs={4} margin={4}>
             <Grid margin={1} sx={4}>
               <TextField 
-                  label='User name' value={name} onChange={e => setName(e.target.value)}
+                  required label='User name' value={name} onChange={e => setName(e.target.value)}
               />
             </Grid>
             <Grid margin={1} sx={4}>
               <TextField 
-                label='User age' value={age} onChange={e => setAge(e.target.value)}
+                required label='User age' value={age} onChange={e => setAge(e.target.value)}
               />
             </Grid>
             <Grid margin={1} sx={4}>
               <TextField 
-                label='Title' value={title} onChange={e => setTitle(e.target.value)}
+                required label='Title' value={title} onChange={e => setTitle(e.target.value)}
               />
             </Grid>
             <Grid margin={1} sx={4}>
               <TextField 
-                label='Note' value={note} onChange={e => setNote(e.target.value)}
+                required label='Note' value={note} onChange={e => setNote(e.target.value)}
               />
             </Grid>
-            <Grid margin={1} sx={2}>
-              <Button onClick={() => {
+            <Grid sx={2}>
+              <Button variant='contained' onClick={() => {
                 handleClose();
               }}>Cancel</Button>
             </Grid>
-            <Grid margin={1} sx={2}>
-              <Button onClick={() => {
+            <Grid sx={2}>
+              <Button variant='contained' onClick={() => {
                 createRecord({variables: { name, age: parseInt(age), note, title }});
                 handleClose();
               }}>Create</Button>
