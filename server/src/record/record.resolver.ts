@@ -22,19 +22,19 @@ export class RecordResolver {
   }
 
   @Query(() => Record, { name: 'record' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => Int }) id: number): Promise<Record> {
     return this.recordService.findOne(id);
   }
 
   @Mutation(() => Record)
   updateRecord(
     @Args('updateRecordInput') updateRecordInput: UpdateRecordInput,
-  ) {
+  ): Promise<Record> {
     return this.recordService.update(updateRecordInput);
   }
 
   @Mutation(() => Record)
-  removeRecord(@Args('id', { type: () => Int }) id: number) {
+  removeRecord(@Args('id', { type: () => Int }) id: number): Promise<Record> {
     return this.recordService.remove(id);
   }
 }

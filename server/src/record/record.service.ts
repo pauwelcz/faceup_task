@@ -14,7 +14,7 @@ export class RecordService {
     private dataSource: DataSource,
   ) {}
 
-  async create(createRecordInput: CreateRecordInput) {
+  async create(createRecordInput: CreateRecordInput): Promise<Record> {
     let savedRecord: Record;
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -40,7 +40,7 @@ export class RecordService {
     };
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Record> {
     const record = await this.recordsRepository.findOne({ where: { id } });
 
     if (!record) {
@@ -52,7 +52,7 @@ export class RecordService {
     return record;
   }
 
-  async update(updateRecordInput: UpdateRecordInput) {
+  async update(updateRecordInput: UpdateRecordInput): Promise<Record> {
     await this.findOne(updateRecordInput.id);
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
