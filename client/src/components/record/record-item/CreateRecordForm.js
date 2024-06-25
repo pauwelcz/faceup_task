@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Button, Dialog, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -95,6 +95,7 @@ function CreateRecordForm(props) {
       handleClose();
     }
   };
+
   return(
     <Grid item xs={1}> 
       <Button startIcon={<AddCircleIcon />} onClick={handleClickOpen} />
@@ -142,18 +143,20 @@ function CreateRecordForm(props) {
                 onChange={handleNoteChange}
               />
             </Grid>
-            <Grid sx={2}>
-              <Button variant='contained' onClick={() => {
-                handleClose();
-              }}>Cancel</Button>
-            </Grid>
-            <Grid sx={2}>
-              <Button variant='contained' onClick={() => {
-                handleCreate({ name, age: parseInt(age), note, title });
-              }}>Create</Button>
-            </Grid>
           </Grid>
         </DialogContent>
+        <DialogActions>
+          <Grid sx={2}>
+            <Button variant='contained' onClick={() => {
+              handleClose();
+            }}>Cancel</Button>
+          </Grid>
+          <Grid sx={2}>
+            <Button variant='contained' onClick={() => {
+              handleCreate({ name, age: parseInt(age), note, title });
+            }}>Create</Button>
+          </Grid>
+        </DialogActions>
       </Dialog>
     </Grid>
   );
