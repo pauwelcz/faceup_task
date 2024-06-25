@@ -1,27 +1,9 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Button, Dialog, DialogContent, DialogTitle, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-
-const CREATE_RECORD_MUTATION = gql`
-  mutation CreateRecord(
-    $name: String!
-    $title: String!
-    $note: String!
-    $age: Int!
-  ) {
-    createRecord(
-      createRecordInput: { name: $name, title: $title, note: $note, age: $age }
-    ) {
-      id
-      name
-      title
-      note
-      age
-    }
-  }
-`;
+import { CREATE_RECORD_MUTATION } from '../../graphql/graphqlOperations';
 
 function CreateRecordForm(props) {
   const { refetch } = props;

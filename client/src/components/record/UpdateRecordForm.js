@@ -1,34 +1,9 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Button, Dialog, DialogContent, DialogTitle, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-
-const UPDATE_RECORD_MUTATION = gql`
-  mutation UpdateRecord(
-    $id: Int!
-    $name: String!
-    $title: String!
-    $note: String!
-    $age: Int!
-  ) {
-    updateRecord(
-      updateRecordInput: {
-        id: $id
-        name: $name
-        title: $title
-        note: $note
-        age: $age
-      }
-    ) {
-      id
-      name
-      title
-      note
-      age
-    }
-  }
-`;
+import { UPDATE_RECORD_MUTATION } from '../../graphql/graphqlOperations';
 
 function UpdateRecordForm(props) {
   const {record, refetch} = props;
@@ -62,7 +37,7 @@ function UpdateRecordForm(props) {
     <Grid item xs={1}> 
       <Button startIcon={<EditIcon />} onClick={handleClickOpen} />
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle><strong>Create new record</strong></DialogTitle>
+        <DialogTitle><strong>Update record</strong></DialogTitle>
         <DialogContent>
           <Grid container spacing={2} alignItems={'center'} xs={4} margin={4}>
             <Grid margin={1} sx={4}>

@@ -3,15 +3,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Grid from '@mui/material/Grid';
 import { Dialog, DialogActions, DialogTitle } from '@mui/material';
 import Button from '@mui/material/Button';
-import { gql, useMutation } from "@apollo/client";
-
-export const REMOVE_RECORD_MUTATION = gql`
-    mutation RemoveRecord($id: Int!) {
-      removeRecord(id: $id) {
-        id
-      }
-    }
-`;
+import { useMutation } from "@apollo/client";
+import { REMOVE_RECORD_MUTATION } from '../../graphql/graphqlOperations';
 
 function DeleteRecord(props) {
   const { id, refetch } = props;

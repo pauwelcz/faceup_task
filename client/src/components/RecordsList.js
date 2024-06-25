@@ -1,34 +1,10 @@
 import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Pagination } from '@mui/material';
 import Header from './Header';
 import RecordItem from './RecordItem';
-
-const RECORDS_QUERY = gql`
-  query AllRecords($limit: Int!, $offset: Int!) {
-    records(findRecordsArgs: {limit: $limit, offset: $offset}) {
-      totalNumber
-      records {
-        id
-        age
-        name
-        title
-        note
-        created_at
-        updated_at
-      }
-    }
-  }
-`;
-
-export const REMOVE_RECORD_MUTATION = gql`
-    mutation RemoveRecord($id: Int!) {
-      removeRecord(id: $id) {
-        id
-      }
-    }
-`;
+import { RECORDS_QUERY } from '../graphql/graphqlOperations';
 
 function RecordList() {
   // pagination
