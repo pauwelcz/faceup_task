@@ -7,7 +7,7 @@ import { Record } from '../../../types/record-type';
 import UpdateRecordForm from './UpdateRecordForm';
 import DeleteRecord from './DeleteRecord';
 import CloseIcon from '@mui/icons-material/Close';
-import { dialogActionsStyle } from '../../../styles';
+import { dialogActionsStyle, gridStyle } from '../../../styles';
 
 type RecordDetailsProps = {
   record: Record;
@@ -37,7 +37,7 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
         </DialogTitle>
         <DialogContent>
           <Paper>
-            <Grid margin={1}>
+            <Grid item style={gridStyle}>
               <Typography>
                 Reporter: <strong>{name}</strong>, age <strong>{age}</strong>
               </Typography>

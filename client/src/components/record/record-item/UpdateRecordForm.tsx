@@ -7,7 +7,7 @@ import { Record } from '../../../types/record-type';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
-import { dialogActionsStyle } from '../../../styles';
+import { dialogActionsStyle, gridStyle } from '../../../styles';
 
 type UpdateRecordFormProps = {
   record: Record;
@@ -109,7 +109,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle><strong>Update record</strong></DialogTitle>
         <DialogContent>
-          <Grid item padding={1}>
+          <Grid item style={gridStyle}>
             <TextField 
                 required 
                 label='User name' 
@@ -119,7 +119,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
                 onChange={handleNameChange}
             />
           </Grid>
-          <Grid item padding={1}>
+          <Grid item style={gridStyle}>
             <TextField 
               required 
               label='User age' 
@@ -129,7 +129,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
               onChange={handleAgeChange}
             />
           </Grid>
-          <Grid item padding={1}>
+          <Grid item style={gridStyle}>
             <TextField 
               required 
               label='Title' 
@@ -139,7 +139,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
               onChange={handleTitleChange}
             />
           </Grid>
-          <Grid item padding={1}>
+          <Grid item style={gridStyle}>
             <TextField 
               required 
               label='Note' 

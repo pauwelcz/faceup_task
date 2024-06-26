@@ -6,7 +6,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { CREATE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
-import { dialogActionsStyle } from '../../../styles';
+import { dialogActionsStyle, gridStyle } from '../../../styles';
 
 type CreateRecordFormProps = {
   refetch: () => void;
@@ -111,7 +111,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
         <DialogTitle>
           <strong>Create new record</strong></DialogTitle>
         <DialogContent>
-            <Grid item padding={1}>
+            <Grid item style={gridStyle}>
               <TextField 
                   required 
                   label='User name' 
@@ -121,7 +121,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
                   onChange={handleNameChange}
               />
             </Grid>
-            <Grid item padding={1}>
+            <Grid item style={gridStyle}>
               <TextField 
                 required 
                 label='User age' 
@@ -131,7 +131,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
                 onChange={handleAgeChange}
               />
             </Grid>
-            <Grid item padding={1}>
+            <Grid item style={gridStyle}>
               <TextField 
                 required 
                 label='Title' 
@@ -141,7 +141,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
                 onChange={handleTitleChange}
               />
             </Grid>
-            <Grid item padding={1}>
+            <Grid item style={gridStyle}>
               <TextField 
                 required 
                 label='Note' 

@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import RecordDetails from './record-item/RecordDetails';
 import { Record } from '../../types/record-type';
-import { paperStyle } from '../../styles';
+import { gridStyle, paperStyle } from '../../styles';
 
 type RecordItemProps = {
   record: Record;
@@ -16,17 +16,17 @@ const RecordItem: FC<RecordItemProps> = (props) => {
 
   return (
     <Paper style={{...paperStyle, backgroundColor: id % 2 === 0 ? '#afeaed' : '#97ebf0', borderColor: 'black' }}>
-      <Grid container margin={1}>
-          <Grid item xs={2} padding={1}>
+      <Grid container alignItems={'center'}>
+          <Grid item xs={2} style={gridStyle}>
             <strong>{name}</strong>
           </Grid>
-          <Grid item xs={2} padding={1}>
+          <Grid item xs={2} style={gridStyle}>
             <strong>{title}</strong>
           </Grid>
-          <Grid item xs={3} textOverflow={'ellipsis'} whiteSpace={'nowrap'} overflow={'hidden'} padding={1}>
+          <Grid item xs={3} textOverflow={'ellipsis'} whiteSpace={'nowrap'} overflow={'hidden'} style={gridStyle}>
             {note}
           </Grid>
-          <Grid item xs={2} padding={1}>
+          <Grid item xs={2} style={gridStyle}>
             {created_at}
           </Grid>
           <RecordDetails record={props.record}  refetch={refetch} />
