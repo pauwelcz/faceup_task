@@ -10,7 +10,13 @@ export const CREATE_RECORD_MUTATION = gql`
     $age: Int!
   ) {
     createRecord(
-      createRecordInput: { name: $name, title: $title, note: $note, age: $age }
+      createRecordInput: { 
+        name: $name, 
+        title: $title, 
+        note: $note, 
+        age: $age, 
+        files: [] 
+      }
     ) {
       ...RecordFields
     }
@@ -32,7 +38,8 @@ export const UPDATE_RECORD_MUTATION = gql`
         name: $name
         title: $title
         note: $note
-        age: $age
+        age: $age,
+        files: []
       }
     ) {
       ...RecordFields
