@@ -7,6 +7,7 @@ import { Record } from '../../../types/record-type';
 import UpdateRecordForm from './UpdateRecordForm';
 import DeleteRecord from './DeleteRecord';
 import CloseIcon from '@mui/icons-material/Close';
+import { dialogActionsStyle } from '../../../styles';
 
 type RecordDetailsProps = {
   record: Record;
@@ -55,7 +56,7 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
             </Grid>
           </Paper>
         </DialogContent>
-        <DialogActions style={{ justifyContent: "space-between", margin: 5}}>
+        <DialogActions style={dialogActionsStyle}>
           <Button variant='contained' startIcon={<CloseIcon />} onClick={handleClose}>Close</Button>
           <UpdateRecordForm record={props.record} refetch={refetch} />
           <DeleteRecord id={props.record.id} refetch={refetch} />

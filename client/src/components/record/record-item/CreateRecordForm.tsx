@@ -6,6 +6,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { CREATE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
+import { dialogActionsStyle } from '../../../styles';
 
 type CreateRecordFormProps = {
   refetch: () => void;
@@ -104,7 +105,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
   };
 
   return(
-    <Grid item xs={3}> 
+    <> 
       <Button  variant='contained' startIcon={<AddCircleIcon />} onClick={handleClickOpen} >Create new record</Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
@@ -151,7 +152,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
               />
             </Grid>
         </DialogContent>
-        <DialogActions style={{ justifyContent: "space-between", margin: 5}}>
+        <DialogActions style={dialogActionsStyle}>
           <Grid>
             <Button startIcon={<CloseIcon />} variant='contained' onClick={() => {
               handleClose();
@@ -164,7 +165,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
           </Grid>
         </DialogActions>
       </Dialog>
-    </Grid>
+    </>
   );
 }
 

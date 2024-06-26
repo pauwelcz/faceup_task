@@ -7,6 +7,7 @@ import { Record } from '../../../types/record-type';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
+import { dialogActionsStyle } from '../../../styles';
 
 type UpdateRecordFormProps = {
   record: Record;
@@ -149,7 +150,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
             />
           </Grid>
         </DialogContent>
-        <DialogActions style={{ justifyContent: "space-between", margin: 5}}>
+        <DialogActions style={dialogActionsStyle}>
           <Grid>
             <Button startIcon={<CloseIcon />} variant='contained' onClick={() => {
               handleClose();

@@ -6,6 +6,7 @@ import { REMOVE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
+import { dialogActionsStyle } from '../../../styles';
 
 type DeleteRecordProps = {
   id: number;
@@ -38,7 +39,7 @@ const DeleteRecord: FC<DeleteRecordProps> = (props) => {
       <Button variant='contained' startIcon={<DeleteIcon /> } onClick={handleOpen}>Delete</Button>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Are you sure you want to delete this record?</DialogTitle>
-          <DialogActions style={{ justifyContent: "space-between", margin: 5}}>
+          <DialogActions style={dialogActionsStyle}>
             <Button variant='contained' startIcon={<CloseIcon />} onClick={handleClose}>Cancel</Button>
             <Button variant='contained' startIcon={<DeleteIcon />} onClick={() => {
               handleDelete(id);
