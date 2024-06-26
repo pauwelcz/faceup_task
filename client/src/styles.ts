@@ -8,6 +8,10 @@ export const paperStyle = {
   padding: 2
 };
 
-export const gridStyle = {
+export const gridItemStyle = {
   padding: 2,
 };
+
+export const gridContainerStyle = {
+  alignItems: 'center'
+}
