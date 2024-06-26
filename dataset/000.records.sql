@@ -5,7 +5,7 @@ CREATE TABLE records (
     name VARCHAR(255) NOT NULL,
     age INTEGER NOT NULL,
     title VARCHAR(255),
-    note VARCHAR(255),
+    note VARCHAR(1024),
     created_at TIMESTAMP DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP
 );

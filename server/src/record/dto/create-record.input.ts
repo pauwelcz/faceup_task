@@ -20,7 +20,7 @@ export class CreateRecordInput {
   title: string;
 
   @MinLength(1)
-  @MaxLength(255)
+  @MaxLength(1024)
   @IsOptional()
   @Field({ nullable: true, description: 'Example field (placeholder)' })
   note: string;
