@@ -4,6 +4,7 @@ import Paper from '@mui/material/Paper';
 import RecordDetails from './record-item/RecordDetails';
 import { Record } from '../../types/record-type';
 import { gridContainerStyle, gridItemStyle, paperStyle } from '../../styles';
+import DateFormatter from '../utils/DateFormatter';
 
 type RecordItemProps = {
   record: Record;
@@ -27,7 +28,7 @@ const RecordItem: FC<RecordItemProps> = (props) => {
             {note}
           </Grid>
           <Grid item xs={2} style={gridItemStyle}>
-            {created_at}
+            <DateFormatter date={created_at}/>
           </Grid>
           <RecordDetails record={props.record}  refetch={refetch} />
       </Grid>

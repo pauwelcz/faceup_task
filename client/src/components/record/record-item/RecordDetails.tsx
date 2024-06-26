@@ -8,6 +8,7 @@ import UpdateRecordForm from './UpdateRecordForm';
 import DeleteRecord from './DeleteRecord';
 import CloseIcon from '@mui/icons-material/Close';
 import { dialogActionsStyle, gridItemStyle } from '../../../styles';
+import DateFormatter from '../../utils/DateFormatter';
 
 type RecordDetailsProps = {
   record: Record;
@@ -33,25 +34,28 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
       <Button variant='contained' startIcon={<SearchIcon />} onClick={handleClickOpen} >Details</Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
-          <Typography>Record details</Typography>
+          <strong>Record details</strong>
         </DialogTitle>
         <DialogContent>
           <Paper>
             <Grid item style={gridItemStyle}>
               <Typography>
-                Reporter: <strong>{name}</strong>, age <strong>{age}</strong>
+                <strong>Reporter:</strong> {name}
               </Typography>
               <Typography>
-                Title: <strong>{title}</strong>
+                <strong>Age:</strong> {age}
               </Typography>
               <Typography>
-                Note: {note}
+                <strong>Title:</strong> {title}
               </Typography>
               <Typography>
-                Created: {(new Date(created_at)).toUTCString()}  
+                <strong>Note:</strong> {note}
               </Typography>
               <Typography>
-                Attached files: 
+                <strong>Created:</strong> <DateFormatter date={created_at}/>  
+              </Typography>
+              <Typography>
+                <strong>Attached files:</strong>
               </Typography>
             </Grid>
           </Paper>
