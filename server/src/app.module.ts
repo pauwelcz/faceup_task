@@ -15,6 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.MYSQL_DATABASE || 'faceup',
       entities: ['dist/**/*.entity.js'],
       synchronize: false,
+      timezone: 'Z',
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
