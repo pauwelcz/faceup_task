@@ -11,3 +11,18 @@ services:
       - '3306:3306'
     volumes:
       - ./dataset:/docker-entrypoint-initdb.d
+
+  minio:
+    image: minio/minio
+    entrypoint: sh
+    command: -c "mkdir -p /data/test-bucket && /usr/bin/minio server /data"
+    environment:
+      MINIO_ACCESS_KEY: minio_access_key
+      MINIO_SECRET_KEY: minio_secret_key
+    ports:
+      - "9000:9000"
+    volumes:
+      - minio_data:/data
+
+volumes:
+  minio_data:

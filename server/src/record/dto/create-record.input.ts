@@ -1,5 +1,7 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
 import { IsOptional, MaxLength, Min, MinLength } from 'class-validator';
+// @ts-ignore
+import { GraphQLUpload, FileUpload } from 'graphql-upload';
 
 @InputType()
 export class CreateRecordInput {
@@ -22,4 +24,8 @@ export class CreateRecordInput {
   @IsOptional()
   @Field({ nullable: true, description: 'Example field (placeholder)' })
   note: string;
+
+  @Field(() => [GraphQLUpload])
+  @IsOptional()
+  files?: Promise<FileUpload[]>;
 }
