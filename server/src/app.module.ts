@@ -3,6 +3,7 @@ import { RecordModule } from './record/record.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       playground: true,
     }),
     RecordModule,
+    FileModule,
   ],
   controllers: [],
   providers: [],

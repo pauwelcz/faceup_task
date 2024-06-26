@@ -1,6 +1,6 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
 import { IsOptional, MaxLength, Min, MinLength } from 'class-validator';
-// @ts-ignore
+// @ts-expect-error nejde najít, nevím proč
 import { GraphQLUpload, FileUpload } from 'graphql-upload';
 
 @InputType()
