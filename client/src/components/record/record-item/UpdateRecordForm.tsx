@@ -69,7 +69,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
 
   const [updateRecord] = useMutation(UPDATE_RECORD_MUTATION);
 
-  const handleUpdate = async (variables: { id: number, name: string; age: number | string; title: string; note: string; }) => {
+  const handleUpdate = async (variables: { id: number, name: string; age: string | number; title: string; note: string; }) => {
     let valid = true;
 
     if (name === '') {
@@ -93,6 +93,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
     }
 
     if (valid) {
+      variables.age = parseInt(age);
       await updateRecord({variables});
       refetch();
       handleClose();

@@ -38,7 +38,7 @@ function RecordList() {
         <Header refetch={refetch} />
         <Paper style={{margin: 5, padding: 2, backgroundColor: '#02ecfa'}} >
         {data?.records.records.map((record) => (
-          <RecordItem record={record} refetch={refetch}/>
+          <RecordItem record={record}refetch={refetch}/>
         ))}
         </Paper>
         <Paper elevation={3} style={{margin: 5, padding: 2, backgroundColor: '#02ecfa' }}>

@@ -4,13 +4,17 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Paper } from '@mui/m
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import { Record } from '../../../types/record-type';
+import UpdateRecordForm from './UpdateRecordForm';
+import DeleteRecord from './DeleteRecord';
 
 
 type RecordDetailsProps = {
   record: Record;
+  refetch: () => void;
 };
 
 const RecordDetails: FC<RecordDetailsProps> = (props) => {
+  const { refetch } = props;
   const {name, title, created_at, age, note } = props.record;
 
   const [open, setOpen] = useState(false);
@@ -58,7 +62,9 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
           </Paper>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button variant='contained' onClick={handleClose}>Close</Button>
+          <UpdateRecordForm record={props.record} refetch={refetch} />
+          <DeleteRecord id={props.record.id} refetch={refetch} />
         </DialogActions>
       </Dialog>
     </Grid>

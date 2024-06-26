@@ -38,8 +38,8 @@ const DeleteRecord: FC<DeleteRecordProps> = (props) => {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Are you sure you want to delete this record?</DialogTitle>
           <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={() => {
+            <Button variant='contained' onClick={handleClose}>Cancel</Button>
+            <Button variant='contained' onClick={() => {
               handleDelete(id);
             }} autoFocus>
               Delete
