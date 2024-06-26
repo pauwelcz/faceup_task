@@ -4,6 +4,8 @@ import Grid from '@mui/material/Grid';
 import React, { useState, FC } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { CREATE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
+import SaveIcon from '@mui/icons-material/Save';
+import CloseIcon from '@mui/icons-material/Close';
 
 type CreateRecordFormProps = {
   refetch: () => void;
@@ -102,13 +104,13 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
   };
 
   return(
-    <Grid item xs={1}> 
-      <Button startIcon={<AddCircleIcon />} onClick={handleClickOpen} />
+    <Grid item xs={3}> 
+      <Button  variant='contained' startIcon={<AddCircleIcon />} onClick={handleClickOpen} >Create new record</Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle><strong>Create new record</strong></DialogTitle>
+        <DialogTitle>
+          <strong>Create new record</strong></DialogTitle>
         <DialogContent>
-          <Grid container spacing={2} alignItems={'center'} xs={4} margin={4}>
-            <Grid margin={1}>
+            <Grid item padding={1}>
               <TextField 
                   required 
                   label='User name' 
@@ -118,7 +120,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
                   onChange={handleNameChange}
               />
             </Grid>
-            <Grid margin={1}>
+            <Grid item padding={1}>
               <TextField 
                 required 
                 label='User age' 
@@ -128,7 +130,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
                 onChange={handleAgeChange}
               />
             </Grid>
-            <Grid margin={1}>
+            <Grid item padding={1}>
               <TextField 
                 required 
                 label='Title' 
@@ -138,7 +140,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
                 onChange={handleTitleChange}
               />
             </Grid>
-            <Grid margin={1}>
+            <Grid item padding={1}>
               <TextField 
                 required 
                 label='Note' 
@@ -148,16 +150,15 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
                 onChange={handleNoteChange}
               />
             </Grid>
-          </Grid>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{ justifyContent: "space-between", margin: 5}}>
           <Grid>
-            <Button variant='contained' onClick={() => {
+            <Button startIcon={<CloseIcon />} variant='contained' onClick={() => {
               handleClose();
             }}>Cancel</Button>
           </Grid>
           <Grid>
-            <Button variant='contained' onClick={() => {
+            <Button startIcon={<SaveIcon />} variant='contained' onClick={() => {
               handleCreate({ name, age, note, title });
             }}>Create</Button>
           </Grid>

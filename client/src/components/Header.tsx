@@ -11,19 +11,19 @@ type HeaderProps = {
 const Header: FC<HeaderProps> = (props) => {
   const { refetch } = props;
   return (
-      <Paper style={{margin: 5, padding: 2, backgroundColor: '#02ecfa', borderColor: 'black'}} >
-        <Grid container>
-          <Grid item xs={2} > 
-              <strong>User name</strong> 
+      <Paper style={{margin: 5, padding: 2, backgroundColor: '#02ecfa'}} >
+        <Grid container margin={1}>
+          <Grid item xs={2} padding={1}> 
+            <strong>User name</strong> 
           </Grid>
-          <Grid item xs={2} > 
-              <strong>Title</strong> 
+          <Grid item xs={2} padding={1}> 
+            <strong>Title</strong> 
           </Grid>
-          <Grid item xs={3} > 
-              <strong>Note</strong> 
+          <Grid item xs={3} padding={1}> 
+            <strong>Note</strong> 
           </Grid>
-          <Grid item xs={2} > 
-              <strong>Created</strong> 
+          <Grid item xs={2} padding={1}> 
+            <strong>Created</strong> 
           </Grid>
           <CreateRecordForm refetch={refetch}/>
         </Grid>

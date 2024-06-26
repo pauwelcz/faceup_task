@@ -12,20 +12,20 @@ type RecordItemProps = {
 const RecordItem: FC<RecordItemProps> = (props) => {
   const { record, refetch } = props;
   const { id, name, title, note, created_at } = record;
-  
+
   return (
-    <Paper style={{ margin: 1, backgroundColor: id % 2 === 0 ? '#afeaed' : '#97ebf0', borderColor: 'black' }}>
-      <Grid container spacing={0.25} margin={1}>
-          <Grid item xs={2}>
-            <strong>{name} </strong>
+    <Paper style={{ margin: 5, padding: 2, backgroundColor: id % 2 === 0 ? '#afeaed' : '#97ebf0', borderColor: 'black' }}>
+      <Grid container margin={1}>
+          <Grid item xs={2} padding={1}>
+            <strong>{name}</strong>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={2} padding={1}>
             <strong>{title}</strong>
           </Grid>
-          <Grid item xs={3} textOverflow={'ellipsis'} whiteSpace={'nowrap'} overflow={'hidden'}>
+          <Grid item xs={3} textOverflow={'ellipsis'} whiteSpace={'nowrap'} overflow={'hidden'} padding={1}>
             {note}
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={2} padding={1}>
             {created_at}
           </Grid>
           <RecordDetails record={props.record}  refetch={refetch} />

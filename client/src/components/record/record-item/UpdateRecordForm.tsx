@@ -2,9 +2,11 @@ import { useMutation } from '@apollo/client';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { useState, FC } from 'react';
-import EditIcon from '@mui/icons-material/Edit';
 import { UPDATE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
 import { Record } from '../../../types/record-type';
+import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
 
 type UpdateRecordFormProps = {
   record: Record;
@@ -101,68 +103,66 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
   };
 
   return(
-    <Grid item xs={1}> 
-      <Button startIcon={<EditIcon />} onClick={handleClickOpen} />
+    <> 
+      <Button variant='contained' startIcon={<EditIcon />} onClick={handleClickOpen} > Edit </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle><strong>Update record</strong></DialogTitle>
         <DialogContent>
-          <Grid container spacing={2} alignItems={'center'} xs={4} margin={4}>
-            <Grid margin={1}>
-              <TextField 
-                  required 
-                  label='User name' 
-                  value={name} 
-                  error={!!nameError}
-                  helperText={nameError}
-                  onChange={handleNameChange}
-              />
-            </Grid>
-            <Grid margin={1}>
-              <TextField 
+          <Grid item padding={1}>
+            <TextField 
                 required 
-                label='User age' 
-                value={age} 
-                error={!!ageError}
-                helperText={ageError}
-                onChange={handleAgeChange}
-              />
-            </Grid>
-            <Grid margin={1}>
-              <TextField 
-                required 
-                label='Title' 
-                value={title} 
-                error={!!titleError}
-                helperText={titleError}
-                onChange={handleTitleChange}
-              />
-            </Grid>
-            <Grid margin={1}>
-              <TextField 
-                required 
-                label='Note' 
-                value={note} 
-                error={!!noteError}
-                helperText={noteError}
-                onChange={handleNoteChange}
-              />
-            </Grid>
+                label='User name' 
+                value={name} 
+                error={!!nameError}
+                helperText={nameError}
+                onChange={handleNameChange}
+            />
+          </Grid>
+          <Grid item padding={1}>
+            <TextField 
+              required 
+              label='User age' 
+              value={age} 
+              error={!!ageError}
+              helperText={ageError}
+              onChange={handleAgeChange}
+            />
+          </Grid>
+          <Grid item padding={1}>
+            <TextField 
+              required 
+              label='Title' 
+              value={title} 
+              error={!!titleError}
+              helperText={titleError}
+              onChange={handleTitleChange}
+            />
+          </Grid>
+          <Grid item padding={1}>
+            <TextField 
+              required 
+              label='Note' 
+              value={note} 
+              error={!!noteError}
+              helperText={noteError}
+              onChange={handleNoteChange}
+            />
           </Grid>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{ justifyContent: "space-between", margin: 5}}>
           <Grid>
-            <Button variant='contained' onClick={() => {
+            <Button startIcon={<CloseIcon />} variant='contained' onClick={() => {
               handleClose();
             }}>Cancel</Button>
           </Grid>
           <Grid>
-            <Button variant='contained' onClick={() => {
+            <Button startIcon={<SaveIcon />} variant='contained' onClick={() => {
               handleUpdate({ id, name, age, note, title });
-            }}>Update</Button>
+            }}>Save</Button>
           </Grid>
         </DialogActions>
       </Dialog>
-    </Grid>
+    </>
   );
 }
 

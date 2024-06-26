@@ -1,12 +1,12 @@
 import React, { FC, useState } from 'react';
 import Grid from '@mui/material/Grid';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Paper } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import { Record } from '../../../types/record-type';
 import UpdateRecordForm from './UpdateRecordForm';
 import DeleteRecord from './DeleteRecord';
-
+import CloseIcon from '@mui/icons-material/Close';
 
 type RecordDetailsProps = {
   record: Record;
@@ -28,46 +28,40 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
   };
 
   return(
-    <Grid item xs={1}> 
-      <Button startIcon={<SearchIcon />} onClick={handleClickOpen} />
+    <> 
+      <Button variant='contained' startIcon={<SearchIcon />} onClick={handleClickOpen} >Details</Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Record details</DialogTitle>
+        <DialogTitle>
+          <Typography>Record details</Typography>
+        </DialogTitle>
         <DialogContent>
           <Paper>
             <Grid margin={1}>
-              <Paper>
-                <strong>{title}</strong>
-              </Paper>
-            </Grid>
-            <Grid margin={1}>
-              <Paper>
-                by <strong>{name}</strong>, age <strong>{age}</strong>
-              </Paper>
-            </Grid>
-            <Grid margin={1}>
-              <Paper>
-                Note
-              </Paper>
-            </Grid>
-            <Grid margin={1}>
-              <Paper>
-                {note}
-              </Paper>
-            </Grid>
-            <Grid margin={1}>
-              <Paper>
-                Created: {(new Date(created_at)).toUTCString()}
-              </Paper>
+              <Typography>
+                Reporter: <strong>{name}</strong>, age <strong>{age}</strong>
+              </Typography>
+              <Typography>
+                Title: <strong>{title}</strong>
+              </Typography>
+              <Typography>
+                Note: {note}
+              </Typography>
+              <Typography>
+                Created: {(new Date(created_at)).toUTCString()}  
+              </Typography>
+              <Typography>
+                Attached files: 
+              </Typography>
             </Grid>
           </Paper>
         </DialogContent>
-        <DialogActions>
-          <Button variant='contained' onClick={handleClose}>Close</Button>
+        <DialogActions style={{ justifyContent: "space-between", margin: 5}}>
+          <Button variant='contained' startIcon={<CloseIcon />} onClick={handleClose}>Close</Button>
           <UpdateRecordForm record={props.record} refetch={refetch} />
           <DeleteRecord id={props.record.id} refetch={refetch} />
         </DialogActions>
       </Dialog>
-    </Grid>
+    </>
   );
 }
 

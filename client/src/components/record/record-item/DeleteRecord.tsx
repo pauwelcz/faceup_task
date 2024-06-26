@@ -1,10 +1,11 @@
 import React, { useState, FC } from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Grid from '@mui/material/Grid';
 import { Dialog, DialogActions, DialogTitle } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useMutation } from "@apollo/client";
 import { REMOVE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
 
 type DeleteRecordProps = {
   id: number;
@@ -32,21 +33,21 @@ const DeleteRecord: FC<DeleteRecordProps> = (props) => {
     handleClose();
   };
 
-  return(
-    <Grid item xs={1}>                   
-      <Button startIcon={<DeleteIcon /> } onClick={handleOpen}/>
+  return(   
+    <>           
+      <Button variant='contained' startIcon={<DeleteIcon /> } onClick={handleOpen}>Delete</Button>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Are you sure you want to delete this record?</DialogTitle>
-          <DialogActions>
-            <Button variant='contained' onClick={handleClose}>Cancel</Button>
-            <Button variant='contained' onClick={() => {
+          <DialogActions style={{ justifyContent: "space-between", margin: 5}}>
+            <Button variant='contained' startIcon={<CloseIcon />} onClick={handleClose}>Cancel</Button>
+            <Button variant='contained' startIcon={<DeleteIcon />} onClick={() => {
               handleDelete(id);
             }} autoFocus>
-              Delete
+              Confirm delete
             </Button>
         </DialogActions>
         </Dialog>
-    </Grid>
+    </>  
   );
 }
 
