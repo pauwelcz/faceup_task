@@ -6,6 +6,7 @@ import Header from './Header';
 import { RECORDS_QUERY } from '../graphql/graphqlOperations';
 import RecordItem from './record/RecordItem';
 import { Record } from '../types/record-type';
+import { paperStyle } from '../styles';
 
 type RecordsData = {
   records: {
@@ -32,16 +33,16 @@ function RecordList() {
   };
 
   return (
-    <Paper style={{margin: 5, padding: 2, backgroundColor: "#97ebf0", border: 10, borderColor: "#FFF" }} >
+    <Paper style={{...paperStyle, backgroundColor: "#97ebf0" }} >
       <h2>Records</h2>  
-      <Paper style={{margin: 5, padding: 2}} >
+      <Paper style={paperStyle} >
         <Header refetch={refetch} />
-        <Paper style={{margin: 5, padding: 2, backgroundColor: '#02ecfa'}} >
+        <Paper style={{...paperStyle, backgroundColor: '#02ecfa'}} >
         {data?.records.records.map((record) => (
           <RecordItem record={record} refetch={refetch}/>
         ))}
         </Paper>
-        <Paper style={{margin: 5, padding: 2, backgroundColor: '#02ecfa' }}>
+        <Paper style={{...paperStyle, backgroundColor: '#02ecfa' }}>
           <Pagination count={Math.ceil((data?.records?.totalNumber ?? 0) / limit)} page={page} onChange={handleChange} />
         </Paper>
       </Paper>

@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import RecordDetails from './record-item/RecordDetails';
 import { Record } from '../../types/record-type';
+import { paperStyle } from '../../styles';
 
 type RecordItemProps = {
   record: Record;
@@ -14,7 +15,7 @@ const RecordItem: FC<RecordItemProps> = (props) => {
   const { id, name, title, note, created_at } = record;
 
   return (
-    <Paper style={{ margin: 5, padding: 2, backgroundColor: id % 2 === 0 ? '#afeaed' : '#97ebf0', borderColor: 'black' }}>
+    <Paper style={{...paperStyle, backgroundColor: id % 2 === 0 ? '#afeaed' : '#97ebf0', borderColor: 'black' }}>
       <Grid container margin={1}>
           <Grid item xs={2} padding={1}>
             <strong>{name}</strong>
