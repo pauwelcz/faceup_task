@@ -11,7 +11,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RecordsAndCount } from './dto/records.output';
 import { FetchRecordsArgs } from './dto/find-records.input';
 import { FileService } from '../file/file.service';
-import { File } from '../file/entities/file.entity';
 
 @Injectable()
 export class RecordService {
@@ -24,7 +23,6 @@ export class RecordService {
 
   async create(createRecordInput: CreateRecordInput): Promise<Record> {
     let savedRecord: Record;
-
     const { files } = createRecordInput;
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -33,21 +31,7 @@ export class RecordService {
     try {
       const record = queryRunner.manager.create(Record, createRecordInput);
       savedRecord = await this.recordsRepository.save(record);
-
-      // saving files
-      const promisedFiles = await Promise.all(files);
-      const filesToCreateDB = [];
-      for (const file of promisedFiles) {
-        filesToCreateDB.push(
-          queryRunner.manager.create(File, {
-            extension: 'txt',
-            filename: `${new Date().valueOf()}_${file['filename']}`,
-            recordId: record.id,
-          }),
-        );
-      }
-
-      await queryRunner.manager.save(File, filesToCreateDB);
+      await this.fileService.saveFiles(record.id, queryRunner, files);
       await queryRunner.commitTransaction();
       return savedRecord;
     } catch (e) {
@@ -56,7 +40,6 @@ export class RecordService {
     } finally {
       await queryRunner.release();
     }
-    return this.findOne(2);
   }
 
   async findAll(args: FetchRecordsArgs): Promise<RecordsAndCount> {
@@ -95,9 +78,8 @@ export class RecordService {
   }
 
   async update(updateRecordInput: UpdateRecordInput): Promise<Record> {
-    const { updatedFilesToDelete } = updateRecordInput;
-    const recordToUpdate = await this.findOne(updateRecordInput.id);
-    const { id } = recordToUpdate;
+    const { updatedFilesToDelete, files, id } = updateRecordInput;
+    await this.findOne(id);
     const existingFiles = await this.fileService.findByRecord(id);
 
     const uploadedFilesToDeleteExists = updatedFilesToDelete.every((item) =>
@@ -115,6 +97,7 @@ export class RecordService {
     await queryRunner.startTransaction();
     try {
       await this.recordsRepository.save(updateRecordInput);
+      await this.fileService.saveFiles(id, queryRunner, files);
       await this.fileService.removeFiles(updatedFilesToDelete, queryRunner);
       await queryRunner.commitTransaction();
     } catch (e) {

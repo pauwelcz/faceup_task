@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { File } from './entities/file.entity';
 import { DataSource, In, QueryRunner, Repository } from 'typeorm';
 import { FilesAndCount } from './dto/files.output';
+import { Upload } from 'graphql-upload-ts';
 
 @Injectable()
 export class FileService {
@@ -29,10 +30,6 @@ export class FileService {
       await queryRunner.release();
     }
     return savedFile;
-  }
-
-  findAll() {
-    return `This action returns all file`;
   }
 
   async findOne(id: number): Promise<File> {
@@ -67,5 +64,25 @@ export class FileService {
     });
 
     await queryRunner.manager.remove(fileToDelete);
+  }
+
+  async saveFiles(
+    recordId: number,
+    queryRunner: QueryRunner,
+    files: Promise<Upload>[],
+  ) {
+    const promisedFiles = await Promise.all(files);
+    const filesToCreateDB = [];
+    for (const file of promisedFiles) {
+      filesToCreateDB.push(
+        queryRunner.manager.create(File, {
+          extension: 'txt',
+          filename: `${new Date().valueOf()}_${file['filename']}`,
+          recordId,
+        }),
+      );
+    }
+
+    await queryRunner.manager.save(File, filesToCreateDB);
   }
 }
