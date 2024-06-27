@@ -22,8 +22,8 @@ const AttachedFiles: FC<AttachedFilesProps> = (props) => {
   const { loading, error, data } = useQuery<FilesData>(FILES_BY_RECORD_QUERY, { variables: { recordId: id }});
   return(<>
     { data?.filesByRecord.totalNumber !== 0 && 
-    <Paper style={{...paperStyle}}>
-      <Typography>
+    <Paper style={{...paperStyle, backgroundColor: '#02ecfa'}}>
+      <Typography padding={1}>
         <strong>Attached files:</strong>
       </Typography>
       {data?.filesByRecord.files.map((file) => (

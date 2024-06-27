@@ -9,6 +9,7 @@ import DeleteRecord from './DeleteRecord';
 import CloseIcon from '@mui/icons-material/Close';
 import { dialogActionsStyle, gridItemStyle } from '../../../styles';
 import DateFormatter from '../../utils/DateFormatter';
+import AttachedFiles from './AttachedFiles';
 
 type RecordDetailsProps = {
   record: Record;
@@ -17,7 +18,7 @@ type RecordDetailsProps = {
 
 const RecordDetails: FC<RecordDetailsProps> = (props) => {
   const { refetch } = props;
-  const {name, title, created_at, age, note } = props.record;
+  const {name, title, created_at, age, note, id } = props.record;
 
   const [open, setOpen] = useState(false);
 
@@ -32,40 +33,40 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
   return(
     <> 
       <Button variant='contained' startIcon={<SearchIcon />} onClick={handleClickOpen} >Details</Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>
-          <strong>Record details</strong>
-        </DialogTitle>
-        <DialogContent>
-          <Paper>
-            <Grid item style={gridItemStyle}>
-              <Typography>
-                <strong>Reporter:</strong> {name}
-              </Typography>
-              <Typography>
-                <strong>Age:</strong> {age}
-              </Typography>
-              <Typography>
-                <strong>Title:</strong> {title}
-              </Typography>
-              <Typography>
-                <strong>Note:</strong> {note}
-              </Typography>
-              <Typography>
-                <strong>Created:</strong> <DateFormatter date={created_at}/>  
-              </Typography>
-              <Typography>
-                <strong>Attached files:</strong>
-              </Typography>
-            </Grid>
+        <Dialog open={open} onClose={handleClose}>
+          <Paper style={{backgroundColor: '#02ecfa'}}>
+            <DialogTitle>
+              <strong>Record details</strong>
+            </DialogTitle>
+            <DialogContent>
+              <Paper>
+                <Grid item style={gridItemStyle}>
+                  <Typography>
+                    <strong>Reporter:</strong> {name}
+                  </Typography>
+                  <Typography>
+                    <strong>Age:</strong> {age}
+                  </Typography>
+                  <Typography>
+                    <strong>Title:</strong> {title}
+                  </Typography>
+                  <Typography>
+                    <strong>Note:</strong> {note}
+                  </Typography>
+                  <Typography>
+                    <strong>Created:</strong> <DateFormatter date={created_at}/>  
+                  </Typography>
+                  <AttachedFiles id={id}/>
+                </Grid>
+              </Paper>
+            </DialogContent>
+            <DialogActions style={dialogActionsStyle}>
+              <Button variant='contained' startIcon={<CloseIcon />} onClick={handleClose}>Close</Button>
+              <UpdateRecordForm record={props.record} refetch={refetch} />
+              <DeleteRecord id={props.record.id} refetch={refetch} />
+            </DialogActions>
           </Paper>
-        </DialogContent>
-        <DialogActions style={dialogActionsStyle}>
-          <Button variant='contained' startIcon={<CloseIcon />} onClick={handleClose}>Close</Button>
-          <UpdateRecordForm record={props.record} refetch={refetch} />
-          <DeleteRecord id={props.record.id} refetch={refetch} />
-        </DialogActions>
-      </Dialog>
+        </Dialog>
     </>
   );
 }
