@@ -8,6 +8,7 @@ export const CREATE_RECORD_MUTATION = gql`
     $title: String!
     $note: String!
     $age: Int!
+    $files: [Upload!]!
   ) {
     createRecord(
       createRecordInput: { 
@@ -15,7 +16,7 @@ export const CREATE_RECORD_MUTATION = gql`
         title: $title, 
         note: $note, 
         age: $age, 
-        files: [] 
+        files: $files
       }
     ) {
       ...RecordFields
@@ -62,6 +63,19 @@ export const RECORDS_QUERY = gql`
       totalNumber
       records {
         ...RecordFields
+      }
+    }
+  }
+`;
+
+export const FILES_BY_RECORD_QUERY = gql`
+  query FilesByRecord($recordId: Int!) {
+    filesByRecord(recordId: $recordId) {
+      totalNumber
+      files {
+        id
+        filename
+        extension
       }
     }
   }
