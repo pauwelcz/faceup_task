@@ -1,11 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateRecordInput } from './dto/create-record.input';
 import { UpdateRecordInput } from './dto/update-record.input';
 import { Record } from './entities/record.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RecordsAndCount } from './dto/records.output';
 import { FetchRecordsArgs } from './dto/find-records.input';
+import { FileService } from '../file/file.service';
+import S3 from 'aws-sdk/clients/s3';
+import { FileUpload, Upload } from 'graphql-upload-ts';
 
 @Injectable()
 export class RecordService {
@@ -13,10 +20,23 @@ export class RecordService {
     @InjectRepository(Record)
     private recordsRepository: Repository<Record>,
     private dataSource: DataSource,
+    private fileService: FileService,
   ) {}
 
   async create(createRecordInput: CreateRecordInput): Promise<Record> {
     let savedRecord: Record;
+
+    const { files } = createRecordInput;
+
+    for (const file of files) {
+      // const params = {
+      //   Bucket: process.env.AWS_S3_BUCKET_NAME,
+      //   Key: `${userId}/${filename}`,
+      //   Body: stream,
+      // };
+      // const res = await s3.upload(params).promise();
+    }
+
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -24,13 +44,14 @@ export class RecordService {
       const record = queryRunner.manager.create(Record, createRecordInput);
       savedRecord = await this.recordsRepository.save(record);
       await queryRunner.commitTransaction();
+      return savedRecord;
     } catch (e) {
       await queryRunner.rollbackTransaction();
       throw e;
     } finally {
       await queryRunner.release();
     }
-    return savedRecord;
+    return this.findOne(2);
   }
 
   async findAll(args: FetchRecordsArgs): Promise<RecordsAndCount> {
@@ -60,13 +81,36 @@ export class RecordService {
     return record;
   }
 
+  async findByIds(ids: number[]): Promise<Record[]> {
+    const records = await this.recordsRepository.find({
+      where: { id: In(ids) },
+    });
+
+    return records;
+  }
+
   async update(updateRecordInput: UpdateRecordInput): Promise<Record> {
-    await this.findOne(updateRecordInput.id);
+    const { updatedFilesToDelete } = updateRecordInput;
+    const recordToUpdate = await this.findOne(updateRecordInput.id);
+    const { id } = recordToUpdate;
+    const existingFiles = await this.fileService.findByRecord(id);
+
+    const uploadedFilesToDeleteExists = updatedFilesToDelete.every((item) =>
+      existingFiles.files.map((file) => file.id).includes(item),
+    );
+
+    if (!uploadedFilesToDeleteExists) {
+      throw new BadRequestException(
+        `Some files to delete does not exist in this record.`,
+      );
+    }
+
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
       await this.recordsRepository.save(updateRecordInput);
+      await this.fileService.removeFiles(updatedFilesToDelete, queryRunner);
       await queryRunner.commitTransaction();
     } catch (e) {
       await queryRunner.rollbackTransaction();
