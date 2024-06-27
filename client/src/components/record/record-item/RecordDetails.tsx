@@ -10,6 +10,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { dialogActionsStyle, gridItemStyle } from '../../../styles';
 import DateFormatter from '../../utils/DateFormatter';
 import AttachedFiles from './AttachedFiles';
+import { useQuery } from '@apollo/client';
+import { FILES_BY_RECORD_QUERY } from '../../../graphql/graphqlOperations';
 
 type RecordDetailsProps = {
   record: Record;
@@ -19,6 +21,8 @@ type RecordDetailsProps = {
 const RecordDetails: FC<RecordDetailsProps> = (props) => {
   const { refetch } = props;
   const {name, title, created_at, age, note, id } = props.record;
+
+  const { loading, error, data, refetch: fileRefetch } = useQuery(FILES_BY_RECORD_QUERY, { variables: { recordId: id }});
 
   const [open, setOpen] = useState(false);
 
@@ -41,28 +45,30 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
             <DialogContent>
               <Paper>
                 <Grid item style={gridItemStyle}>
-                  <Typography>
+                  <Typography paddingLeft={1}>
                     <strong>Reporter:</strong> {name}
                   </Typography>
-                  <Typography>
+                  <Typography paddingLeft={1}>
                     <strong>Age:</strong> {age}
                   </Typography>
-                  <Typography>
+                  <Typography paddingLeft={1}>
                     <strong>Title:</strong> {title}
                   </Typography>
-                  <Typography>
+                  <Typography paddingLeft={1}>
                     <strong>Note:</strong> {note}
                   </Typography>
-                  <Typography>
+                  <Typography paddingLeft={1}>
                     <strong>Created:</strong> <DateFormatter date={created_at}/>  
                   </Typography>
-                  <AttachedFiles id={id}/>
+                  { data?.filesByRecord.totalNumber !== 0 && 
+                    <AttachedFiles files={data?.filesByRecord.files}/>
+                  }
                 </Grid>
               </Paper>
             </DialogContent>
             <DialogActions style={dialogActionsStyle}>
               <Button variant='contained' startIcon={<CloseIcon />} onClick={handleClose}>Close</Button>
-              <UpdateRecordForm record={props.record} refetch={refetch} />
+              <UpdateRecordForm record={props.record} files={data?.filesByRecord.files} refetch={refetch} fileRefetch={fileRefetch} />
               <DeleteRecord id={props.record.id} refetch={refetch} />
             </DialogActions>
           </Paper>
