@@ -13,11 +13,6 @@ export class FileResolver {
     return this.fileService.create(createFileInput);
   }
 
-  @Query(() => [File])
-  findAll() {
-    return this.fileService.findAll();
-  }
-
   @Query(() => File)
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.fileService.findOne(id);
