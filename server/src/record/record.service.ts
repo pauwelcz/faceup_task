@@ -11,8 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RecordsAndCount } from './dto/records.output';
 import { FetchRecordsArgs } from './dto/find-records.input';
 import { FileService } from '../file/file.service';
-import S3 from 'aws-sdk/clients/s3';
-import { FileUpload, Upload } from 'graphql-upload-ts';
+import { File } from '../file/entities/file.entity';
 
 @Injectable()
 export class RecordService {
@@ -28,21 +27,27 @@ export class RecordService {
 
     const { files } = createRecordInput;
 
-    for (const file of files) {
-      // const params = {
-      //   Bucket: process.env.AWS_S3_BUCKET_NAME,
-      //   Key: `${userId}/${filename}`,
-      //   Body: stream,
-      // };
-      // const res = await s3.upload(params).promise();
-    }
-
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
       const record = queryRunner.manager.create(Record, createRecordInput);
       savedRecord = await this.recordsRepository.save(record);
+
+      // saving files
+      const promisedFiles = await Promise.all(files);
+      const filesToCreateDB = [];
+      for (const file of promisedFiles) {
+        filesToCreateDB.push(
+          queryRunner.manager.create(File, {
+            extension: 'txt',
+            filename: `${new Date().valueOf()}_${file['filename']}`,
+            recordId: record.id,
+          }),
+        );
+      }
+
+      await queryRunner.manager.save(File, filesToCreateDB);
       await queryRunner.commitTransaction();
       return savedRecord;
     } catch (e) {

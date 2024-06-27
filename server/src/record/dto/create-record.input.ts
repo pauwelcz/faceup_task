@@ -1,7 +1,13 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
-import { IsOptional, MaxLength, Min, MinLength } from 'class-validator';
-// @ts-expect-error nejde najít, nevím proč
-import { GraphQLUpload, FileUpload } from 'graphql-upload';
+import {
+  IsArray,
+  IsOptional,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
+
+import { GraphQLUpload, Upload } from 'graphql-upload-ts';
 
 @InputType()
 export class CreateRecordInput {
@@ -25,7 +31,11 @@ export class CreateRecordInput {
   @Field({ nullable: true, description: 'Example field (placeholder)' })
   note: string;
 
-  @Field(() => [GraphQLUpload])
+  @Field(() => [GraphQLUpload], {
+    description: 'Input for the profile image files.',
+    nullable: true,
+  })
   @IsOptional()
-  files?: Promise<FileUpload[]>;
+  @IsArray()
+  files?: Promise<Upload>[];
 }
