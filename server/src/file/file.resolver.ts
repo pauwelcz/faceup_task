@@ -27,9 +27,4 @@ export class FileResolver {
   filesByRecord(@Args('recordId', { type: () => Int }) recordId: number) {
     return this.fileService.findByRecord(recordId);
   }
-
-  @Mutation(() => File)
-  removeFile(@Args('id', { type: () => Int }) id: number) {
-    return this.fileService.remove(id);
-  }
 }
