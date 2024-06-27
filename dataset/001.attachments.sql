@@ -18,5 +18,5 @@ CREATE INDEX record_index
 ON attachments (record_id);
 
 INSERT INTO attachments (id, record_id, filename, extension)
-VALUES (1, 1, 'test_file','txt'), 
-       (2, 1, 'test_file', 'mp3');
+VALUES (1, 1, '123_test_file','txt'), 
+       (2, 1, '234_test_file', 'mp3');

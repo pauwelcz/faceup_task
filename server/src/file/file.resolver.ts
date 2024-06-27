@@ -24,7 +24,7 @@ export class FileResolver {
   }
 
   @Query(() => FilesAndCount)
-  findByRecord(@Args('recordId', { type: () => Int }) recordId: number) {
+  filesByRecord(@Args('recordId', { type: () => Int }) recordId: number) {
     return this.fileService.findByRecord(recordId);
   }
 
