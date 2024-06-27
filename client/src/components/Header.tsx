@@ -6,7 +6,7 @@ import CreateRecordForm from './record/record-item/CreateRecordForm';
 import { gridContainerStyle, gridItemStyle, paperStyle } from '../styles';
 
 type HeaderProps = {
-  refetch: () => void; // Typ pro refetch funkci
+  refetch: () => void;
 };
 
 const Header: FC<HeaderProps> = (props) => {

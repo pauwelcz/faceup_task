@@ -16,7 +16,6 @@ type RecordsData = {
 };
 
 function RecordList() {
-  // pagination
   const [limit] = useState(10);
   const [page, setPage] = useState(1);
 
