@@ -9,7 +9,9 @@ CREATE TABLE attachments (
     updated_at TIMESTAMP,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (record_id) REFERENCES records(id)
+    FOREIGN KEY (record_id) 
+        REFERENCES records(id)
+        ON DELETE CASCADE
 );
 
 CREATE INDEX record_index
