@@ -11,10 +11,11 @@ import { dialogActionsStyle } from '../../../styles';
 type DeleteRecordProps = {
   id: number;
   refetch: () => void;
+  handleCloseAfterDelete: () => void;
 };
 
 const DeleteRecord: FC<DeleteRecordProps> = (props) => {
-  const { id, refetch } = props;
+  const { id, refetch, handleCloseAfterDelete } = props;
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -32,6 +33,7 @@ const DeleteRecord: FC<DeleteRecordProps> = (props) => {
 
     refetch();
     handleClose();
+    handleCloseAfterDelete();
   };
 
   return(   

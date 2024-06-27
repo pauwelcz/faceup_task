@@ -69,7 +69,7 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
             <DialogActions style={dialogActionsStyle}>
               <Button variant='contained' startIcon={<CloseIcon />} onClick={handleClose}>Close</Button>
               <UpdateRecordForm record={props.record} files={data?.filesByRecord.files} refetch={refetch} fileRefetch={fileRefetch} />
-              <DeleteRecord id={props.record.id} refetch={refetch} />
+              <DeleteRecord id={props.record.id} refetch={refetch} handleCloseAfterDelete={handleClose} />
             </DialogActions>
           </Paper>
         </Dialog>
