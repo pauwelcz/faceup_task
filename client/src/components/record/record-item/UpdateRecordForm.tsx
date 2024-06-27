@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { useState, FC } from 'react';
 import { UPDATE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
@@ -8,14 +8,19 @@ import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import { dialogActionsStyle, gridItemStyle } from '../../../styles';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { File } from '../../../types/file-type';
 
 type UpdateRecordFormProps = {
   record: Record;
+  files: File[];
   refetch: () => void;
+  fileRefetch: () => void;
 };
 
 const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
-  const {record, refetch} = props;
+  const {record, refetch, files, fileRefetch} = props;
 
   const [id] = useState(record.id);
   const [name, setName] = useState(record.name);
@@ -33,6 +38,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
   const [titleError, setTitleError] = useState('');
   const [noteError, setNoteError] = useState('');
   const [ageError, setAgeError] = useState('');
+  const [updatedFilesToDelete, setUpdatedFilesToDelete] = useState<number[]>([]);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -62,6 +68,16 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
     }
   };
 
+  const handleUpdatedFilesToDelete = (fileId: number) => {
+    setUpdatedFilesToDelete((prevState) => {
+      if (prevState.includes(fileId)) {
+        return prevState.filter(id => id !== fileId);
+      } else {
+        return [...prevState, fileId];
+      }
+    });
+  };
+
   const handleClose = () => {
     setNameError('');
     setTitleError('');
@@ -72,7 +88,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
 
   const [updateRecord] = useMutation(UPDATE_RECORD_MUTATION);
 
-  const handleUpdate = async (variables: { id: number, name: string; age: string | number; title: string; note: string; }) => {
+  const handleUpdate = async (variables: { id: number, name: string; age: string | number; title: string; note: string; updatedFilesToDelete: number[]}) => {
     let valid = true;
 
     if (name === '') {
@@ -99,6 +115,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
       variables.age = parseInt(age);
       await updateRecord({variables});
       refetch();
+      fileRefetch();
       handleClose();
     }
   };
@@ -149,6 +166,23 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
               onChange={handleNoteChange}
             />
           </Grid>
+          <Grid>
+            <Grid>
+              <Typography><strong>Uploaded files</strong></Typography>
+            </Grid>
+            <Grid>
+              {files.map((file) => (
+                <Grid>
+                  <Checkbox 
+                    icon={<DeleteOutlineOutlinedIcon />}
+                    checkedIcon={<DeleteIcon />} 
+                    checked={updatedFilesToDelete.includes(file.id)}
+                    onChange={() => handleUpdatedFilesToDelete(file.id)}
+                  /> {file.filename}
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions style={dialogActionsStyle}>
           <Grid>
@@ -158,7 +192,16 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
           </Grid>
           <Grid>
             <Button startIcon={<SaveIcon />} variant='contained' onClick={() => {
-              handleUpdate({ id, name, age, note, title });
+              handleUpdate(
+                { 
+                  id, 
+                  name, 
+                  age, 
+                  note, 
+                  title, 
+                  updatedFilesToDelete
+                }
+              );
             }}>Save</Button>
           </Grid>
         </DialogActions>

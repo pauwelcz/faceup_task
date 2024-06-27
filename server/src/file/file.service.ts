@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFileInput } from './dto/create-file.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { File } from './entities/file.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, In, QueryRunner, Repository } from 'typeorm';
 import { FilesAndCount } from './dto/files.output';
 
 @Injectable()
@@ -61,22 +61,11 @@ export class FileService {
     };
   }
 
-  async remove(id: number): Promise<File> {
-    const fileToDelete = await this.findOne(id);
+  async removeFiles(id: number[], queryRunner: QueryRunner): Promise<void> {
+    const fileToDelete = await this.filesRepository.find({
+      where: { id: In(id) },
+    });
 
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      await queryRunner.manager.remove(fileToDelete);
-      await queryRunner.commitTransaction();
-    } catch (e) {
-      await queryRunner.rollbackTransaction();
-      throw e;
-    } finally {
-      await queryRunner.release();
-    }
-
-    return { ...fileToDelete, id };
+    await queryRunner.manager.remove(fileToDelete);
   }
 }
