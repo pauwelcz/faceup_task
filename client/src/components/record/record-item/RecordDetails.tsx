@@ -12,6 +12,7 @@ import DateFormatter from '../../utils/DateFormatter';
 import AttachedFiles from './AttachedFiles';
 import { useQuery } from '@apollo/client';
 import { FILES_BY_RECORD_QUERY } from '../../../graphql/graphqlOperations';
+import Loading from '../../Loading';
 
 type RecordDetailsProps = {
   record: Record;
@@ -34,6 +35,7 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
     setOpen(false);
   };
 
+  if (loading) return <Loading />;
   return(
     <> 
       <Button variant='contained' startIcon={<SearchIcon />} onClick={handleClickOpen} >Details</Button>

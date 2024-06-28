@@ -7,6 +7,7 @@ import { RECORDS_QUERY } from '../graphql/graphqlOperations';
 import RecordItem from './record/RecordItem';
 import { Record } from '../types/record-type';
 import { paperStyle } from '../styles';
+import Loading from './Loading';
 
 type RecordsData = {
   records: {
@@ -21,7 +22,7 @@ function RecordList() {
 
   const { loading, error, data, refetch } = useQuery<RecordsData>(RECORDS_QUERY, { variables: { limit, offset: (page - 1) * limit}});
 
-  // if (loading) return 'Loading...'; // TODO -> švihnout loadovací obrazovku
+  if (loading) return <Loading />;
   // if (error) return `Error! ${error}`;
 
   const handleChange = async (event: React.ChangeEvent<unknown>, value: number) => {
