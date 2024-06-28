@@ -62,7 +62,7 @@ export class FileService {
       this.s3Client,
       new GetObjectCommand({
         Key: file.filename,
-        Bucket: 'testBucket',
+        Bucket: 'testbucket',
       }),
       { expiresIn: 3600 },
     );
@@ -122,7 +122,7 @@ export class FileService {
         // sending to database
         filesToCreateDB.push(
           queryRunner.manager.create(File, {
-            extension: '',
+            bucket: 'testbucket',
             filename: newFilename,
             recordId,
           }),

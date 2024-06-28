@@ -2,12 +2,11 @@ import React, {FC} from 'react';
 
 interface FileNameFormatterProps {
     filename: string;
-    extension: string
 }
 
-const FileNameFormatter: FC<FileNameFormatterProps> = ({ filename, extension }) => {
+const FileNameFormatter: FC<FileNameFormatterProps> = ({ filename }) => {
     const slicedFilename = filename.split('_').slice(1).join('_');
-    const formattedFilename = `${slicedFilename}.${extension}`
+    const formattedFilename = `${slicedFilename}`
 
     return (<>
       {formattedFilename}

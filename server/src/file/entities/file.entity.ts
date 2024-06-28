@@ -20,7 +20,7 @@ export class File {
   filename: string;
 
   @Column()
-  extension: string;
+  bucket: string;
 
   @CreateDateColumn()
   created_at: Date;

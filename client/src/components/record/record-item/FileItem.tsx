@@ -20,7 +20,7 @@ const raiseInvoiceClicked = (generateUrl: string) => {
 
 const FileItem: FC<FileItemProps> = (props) => {
   const { file } = props;
-  const { id, filename, extension} = file;
+  const { id, filename } = file;
   const { loading, error, data } = useQuery(GENERATE_URL_QUERY, { variables: { id }});
 
   return (
@@ -30,7 +30,7 @@ const FileItem: FC<FileItemProps> = (props) => {
           <Button startIcon={<DownloadIcon />} onClick={() => {raiseInvoiceClicked(data?.generateUrl)}}/>
         </Grid>
         <Grid item >
-          <FileNameFormatter filename={filename} extension={extension} />
+          <FileNameFormatter filename={filename} />
         </Grid>
       </Grid>
     </Paper>

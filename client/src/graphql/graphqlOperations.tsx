@@ -78,7 +78,7 @@ export const FILES_BY_RECORD_QUERY = gql`
       files {
         id
         filename
-        extension
+        bucket
       }
     }
   }

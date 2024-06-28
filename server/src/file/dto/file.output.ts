@@ -12,7 +12,7 @@ export class File {
   filename: string;
 
   @Field({ description: 'Example field (placeholder)' })
-  extension: string;
+  bucket: string;
 
   @Field()
   created_at: Date;

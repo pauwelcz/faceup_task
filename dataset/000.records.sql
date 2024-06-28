@@ -15,4 +15,4 @@ CREATE TABLE records (
 INSERT INTO records (id, name, age, title, note)
 VALUES (1, 'pavelsedlar', 1, 'test','lorem ipsum'), 
        (2, 'donaldtrump', 55, 'truth', 'media are bad'), 
-       (3, 'johndoe', 3, NULL, NULL);
+       (3, 'johndoe', 3, 'ahoj', 'jak se mas');
