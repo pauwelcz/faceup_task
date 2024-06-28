@@ -7,5 +7,5 @@ export class UpdateRecordInput extends PartialType(CreateRecordInput) {
   id: number;
 
   @Field(() => [Int])
-  updatedFilesToDelete: number[];
+  uploadedFilesToDelete: number[];
 }

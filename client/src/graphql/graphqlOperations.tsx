@@ -32,7 +32,7 @@ export const UPDATE_RECORD_MUTATION = gql`
     $title: String!
     $note: String!
     $age: Int!
-    $updatedFilesToDelete: [Int!]!
+    $uploadedFilesToDelete: [Int!]!
     $files: [Upload!]!
   ) {
     updateRecord(
@@ -42,7 +42,7 @@ export const UPDATE_RECORD_MUTATION = gql`
         title: $title
         note: $note
         age: $age,
-        updatedFilesToDelete: $updatedFilesToDelete,
+        uploadedFilesToDelete: $uploadedFilesToDelete,
         files: $files
       }
     ) {

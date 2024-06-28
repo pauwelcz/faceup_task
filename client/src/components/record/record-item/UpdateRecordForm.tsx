@@ -39,7 +39,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
   const [titleError, setTitleError] = useState('');
   const [noteError, setNoteError] = useState('');
   const [ageError, setAgeError] = useState('');
-  const [updatedFilesToDelete, setUpdatedFilesToDelete] = useState<number[]>([]);
+  const [uploadedFilesToDelete, setUpdatedFilesToDelete] = useState<number[]>([]);
 
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -108,7 +108,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
 
   const [updateRecord] = useMutation(UPDATE_RECORD_MUTATION);
 
-  const handleUpdate = async (variables: { id: number, name: string; age: string | number; title: string; note: string; updatedFilesToDelete: number[]; files: File[]}) => {
+  const handleUpdate = async (variables: { id: number, name: string; age: string | number; title: string; note: string; uploadedFilesToDelete: number[]; files: File[]}) => {
     let valid = true;
 
     if (name === '') {
@@ -197,7 +197,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
                   <Checkbox 
                     icon={<DeleteOutlineOutlinedIcon />}
                     checkedIcon={<DeleteIcon />} 
-                    checked={updatedFilesToDelete.includes(file.id)}
+                    checked={uploadedFilesToDelete.includes(file.id)}
                     onChange={() => handleUpdatedFilesToDelete(file.id)}
                   /> {file.filename}
                 </Grid>
@@ -252,7 +252,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
                   age,
                   note,
                   title,
-                  updatedFilesToDelete,
+                  uploadedFilesToDelete,
                   files: uploadedFiles
                 }
               );

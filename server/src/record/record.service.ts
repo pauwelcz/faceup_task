@@ -78,11 +78,11 @@ export class RecordService {
   }
 
   async update(updateRecordInput: UpdateRecordInput): Promise<Record> {
-    const { updatedFilesToDelete, files, id } = updateRecordInput;
+    const { uploadedFilesToDelete, files, id } = updateRecordInput;
     await this.findOne(id);
     const existingFiles = await this.fileService.findByRecord(id);
 
-    const uploadedFilesToDeleteExists = updatedFilesToDelete.every((item) =>
+    const uploadedFilesToDeleteExists = uploadedFilesToDelete.every((item) =>
       existingFiles.files.map((file) => file.id).includes(item),
     );
 
@@ -98,7 +98,7 @@ export class RecordService {
     try {
       await this.recordsRepository.save(updateRecordInput);
       await this.fileService.saveFiles(id, queryRunner, files);
-      await this.fileService.removeFiles(updatedFilesToDelete, queryRunner);
+      await this.fileService.removeFiles(uploadedFilesToDelete, queryRunner);
       await queryRunner.commitTransaction();
     } catch (e) {
       await queryRunner.rollbackTransaction();
