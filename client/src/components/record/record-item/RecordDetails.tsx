@@ -15,6 +15,7 @@ import { FILES_BY_RECORD_QUERY } from '../../../graphql/graphqlOperations';
 import Loading from '../../Loading';
 import SomethingWentWrong from '../../SomethingWentWrong';
 import useDialog from '../../../hooks/useDialog';
+import { COLORS } from '../../../types/colors';
 
 type RecordDetailsProps = {
   record: Record;
@@ -36,7 +37,7 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
     <> 
       <Button variant='contained' startIcon={<SearchIcon />} onClick={handleClickOpen} >Details</Button>
         <Dialog open={open} onClose={handleClickClose}>
-          <Paper style={{backgroundColor: '#02ecfa'}}>
+          <Paper style={{backgroundColor: COLORS.primary}}>
             <DialogTitle>
               <strong>Record details</strong>
             </DialogTitle>

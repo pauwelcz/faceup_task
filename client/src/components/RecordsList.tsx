@@ -9,6 +9,7 @@ import { Record } from '../types/record-type';
 import { paperStyle } from '../styles';
 import Loading from './Loading';
 import SomethingWentWrong from './SomethingWentWrong';
+import { COLORS } from '../types/colors';
 
 type RecordsData = {
   records: {
@@ -38,12 +39,12 @@ function RecordList() {
       <h2>Records</h2>  
       <Paper style={paperStyle} >
         <Header refetch={refetch} />
-        <Paper style={{...paperStyle, backgroundColor: '#02ecfa'}} >
+        <Paper style={{...paperStyle, backgroundColor: COLORS.primary}} >
         {data?.records.records.map((record) => (
           <RecordItem record={record} refetch={refetch}/>
         ))}
         </Paper>
-        <Paper style={{...paperStyle, backgroundColor: '#02ecfa' }}>
+        <Paper style={{...paperStyle, backgroundColor: COLORS.primary }}>
           <Pagination count={Math.ceil((data?.records?.totalNumber ?? 0) / limit)} page={page} onChange={handleChange} />
         </Paper>
       </Paper>

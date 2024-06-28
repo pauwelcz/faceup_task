@@ -4,6 +4,7 @@ import Paper from '@mui/material/Paper';
 import React from 'react';
 import CreateRecordForm from './record/record-item/CreateRecordForm';
 import { gridContainerStyle, gridItemStyle, paperStyle } from '../styles';
+import { COLORS } from '../types/colors';
 
 type HeaderProps = {
   refetch: () => void;
@@ -12,7 +13,7 @@ type HeaderProps = {
 const Header: FC<HeaderProps> = (props) => {
   const { refetch } = props;
   return (
-      <Paper style={{...paperStyle, backgroundColor: '#02ecfa'}} >
+      <Paper style={{...paperStyle, backgroundColor: COLORS.primary}} >
         <Grid container style={gridContainerStyle}>
           <Grid item xs={2} style={gridItemStyle}> 
             <strong>User name</strong> 

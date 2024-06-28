@@ -5,6 +5,7 @@ import RecordDetails from './record-item/RecordDetails';
 import { Record } from '../../types/record-type';
 import { gridContainerStyle, gridItemStyle, paperStyle } from '../../styles';
 import DateFormatter from '../utils/DateFormatter';
+import { COLORS } from '../../types/colors';
 
 type RecordItemProps = {
   record: Record;
@@ -16,7 +17,7 @@ const RecordItem: FC<RecordItemProps> = (props) => {
   const { id, name, title, note, created_at } = record;
 
   return (
-    <Paper style={{...paperStyle, backgroundColor: id % 2 === 0 ? '#afeaed' : '#97ebf0', borderColor: 'black' }}>
+    <Paper style={{...paperStyle, backgroundColor: id % 2 === 0 ? COLORS.tertiary : COLORS.secondary, borderColor: 'black' }}>
       <Grid container style={gridContainerStyle}>
           <Grid item xs={2} style={gridItemStyle}>
             <strong>{name}</strong>

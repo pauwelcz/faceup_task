@@ -10,6 +10,7 @@ import { useQuery } from '@apollo/client';
 import { GENERATE_URL_QUERY } from '../../../graphql/graphqlOperations';
 import Loading from '../../Loading';
 import SomethingWentWrong from '../../SomethingWentWrong';
+import { COLORS } from '../../../types/colors';
 
 type FileItemProps = {
   file: File;
@@ -29,7 +30,7 @@ const FileItem: FC<FileItemProps> = (props) => {
   if (loading) return <Loading />;
   
   return (
-    <Paper style={{...paperStyle, backgroundColor: id % 2 === 0 ? '#afeaed' : '#97ebf0', borderColor: 'black' }}>
+    <Paper style={{...paperStyle, backgroundColor: id % 2 === 0 ? COLORS.tertiary : COLORS.secondary, borderColor: 'black' }}>
       <Grid container style={gridContainerStyle}>
         <Grid item >
           <Button startIcon={<DownloadIcon />} onClick={() => {raiseInvoiceClicked(data?.generateUrl)}}/>
