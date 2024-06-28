@@ -4,10 +4,27 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { File } from './entities/file.entity';
 import { DataSource, In, QueryRunner, Repository } from 'typeorm';
 import { FilesAndCount } from './dto/files.output';
-import { Upload } from 'graphql-upload-ts';
+import {
+  CreateBucketCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
+import { Readable } from 'stream';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 @Injectable()
 export class FileService {
+  private readonly s3Client = new S3Client({
+    endpoint: 'http://127.0.0.1:4566',
+    region: 'us-west-1',
+    forcePathStyle: true,
+    credentials: {
+      accessKeyId: 'testkey',
+      secretAccessKey: 'testsecret',
+    },
+  });
+
   constructor(
     @InjectRepository(File)
     private filesRepository: Repository<File>,
@@ -66,23 +83,74 @@ export class FileService {
     await queryRunner.manager.remove(fileToDelete);
   }
 
-  async saveFiles(
-    recordId: number,
-    queryRunner: QueryRunner,
-    files: Promise<Upload>[],
-  ) {
-    const promisedFiles = await Promise.all(files);
+  async saveFiles(recordId: number, queryRunner: QueryRunner, files: any) {
     const filesToCreateDB = [];
-    for (const file of promisedFiles) {
-      filesToCreateDB.push(
-        queryRunner.manager.create(File, {
-          extension: 'txt',
-          filename: `${new Date().valueOf()}_${file['filename']}`,
-          recordId,
+
+    try {
+      await this.s3Client.send(
+        new CreateBucketCommand({
+          Bucket: 'bucket',
         }),
       );
+    } catch (e) {
+      console.log(e)
     }
 
+    await Promise.all(
+      files.map(async (file: any) => {
+        const { createReadStream, filename, mimetype } = await file;
+        const newFilename = `${new Date().valueOf()}_${filename}`;
+
+        // sending to s3
+        const buffer = await this.streamToBuffer(createReadStream());
+        await this.s3Client.send(
+          new PutObjectCommand({
+            Body: buffer,
+            ContentType: mimetype,
+            Key: newFilename,
+            Bucket: 'bucket',
+          }),
+        );
+
+        // signed url
+        const url = await getSignedUrl(
+          this.s3Client,
+          new GetObjectCommand({
+            Key: newFilename,
+            Bucket: 'bucket',
+          }),
+          { expiresIn: 3600 },
+        );
+
+        // sending to database
+        filesToCreateDB.push(
+          queryRunner.manager.create(File, {
+            extension: '',
+            filename: newFilename,
+            recordId,
+          }),
+        );
+      }),
+    );
+
     await queryRunner.manager.save(File, filesToCreateDB);
+  }
+
+  async uploadSingleToCloudinaryGraphql(args: any) {
+    const { createReadStream } = await args.file;
+    const buffer = await this.streamToBuffer(createReadStream());
+
+    return buffer;
+  }
+
+  async streamToBuffer(stream: Readable): Promise<Buffer> {
+    const buffer: Uint8Array[] = [];
+
+    return new Promise((resolve, reject) =>
+      stream
+        .on('error', (error) => reject(error))
+        .on('data', (data) => buffer.push(data))
+        .on('end', () => resolve(Buffer.concat(buffer))),
+    );
   }
 }

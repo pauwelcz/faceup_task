@@ -37,5 +37,5 @@ export class CreateRecordInput {
   })
   @IsOptional()
   @IsArray()
-  files?: Promise<Upload>[];
+  files?: Promise<[Upload]>;
 }

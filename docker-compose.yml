@@ -12,17 +12,18 @@ services:
     volumes:
       - ./dataset:/docker-entrypoint-initdb.d
 
-  minio:
-    image: minio/minio
-    entrypoint: sh
-    command: -c "mkdir -p /data/test-bucket && /usr/bin/minio server /data"
-    environment:
-      MINIO_ACCESS_KEY: minio_access_key
-      MINIO_SECRET_KEY: minio_secret_key
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack_demo
     ports:
-      - "9000:9000"
-    volumes:
-      - minio_data:/data
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - DEFAULT_REGION=eu-west-1
+      - AWS_ACCESS_KEY_ID=testkey
+      - AWS_SECRET_ACCESS_KEY=testsecret
 
-volumes:
-  minio_data:
+    volumes:
+      - './my_localstack_init:/docker-entrypoint-initaws.d'
