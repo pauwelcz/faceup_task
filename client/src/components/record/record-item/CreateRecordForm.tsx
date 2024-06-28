@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Tooltip } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { useState, FC, useRef } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -8,6 +8,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import { dialogActionsStyle, gridItemStyle } from '../../../styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type CreateRecordFormProps = {
   refetch: () => void;
@@ -39,6 +40,10 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
         fileInputRef.current.value = '';
       }
     }
+  };
+
+  const handleRemoveFile = (index: number) => {
+    setUploadedFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -179,11 +184,19 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
             </Grid>
             <Grid item style={gridItemStyle}>
               <strong>Attached files:</strong>
-              <Grid>
                 {uploadedFiles.map((file, index) => (
-                    <li key={index}>{file.name}</li>
-                ))}
-              </Grid>
+                  <>
+                  <Grid>
+                    <Tooltip key={index} title={`Click to remove ${file.name}`}>
+                      <Button
+                        key={index}
+                        variant="outlined"
+                        onClick={() => handleRemoveFile(index)}
+                      >{file.name}</Button>
+                    </Tooltip>
+                    </Grid>
+                  </>
+                ))}                              
             </Grid>
             <Grid item style={gridItemStyle}>
               <Button 
