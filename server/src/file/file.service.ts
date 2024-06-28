@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateFileInput } from './dto/create-file.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { File } from './entities/file.entity';
 import { DataSource, In, QueryRunner, Repository } from 'typeorm';
@@ -30,24 +29,6 @@ export class FileService {
     private filesRepository: Repository<File>,
     private dataSource: DataSource,
   ) {}
-
-  async create(createFileInput: CreateFileInput): Promise<File> {
-    let savedFile: File;
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      const record = queryRunner.manager.create(File, createFileInput);
-      savedFile = await this.filesRepository.save(record);
-      await queryRunner.commitTransaction();
-    } catch (e) {
-      await queryRunner.rollbackTransaction();
-      throw e;
-    } finally {
-      await queryRunner.release();
-    }
-    return savedFile;
-  }
 
   async findOne(id: number): Promise<string> {
     const file = await this.filesRepository.findOne({ where: { id } });
