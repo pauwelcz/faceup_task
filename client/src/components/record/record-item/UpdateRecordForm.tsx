@@ -102,6 +102,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
     setTitleError('');
     setAgeError('');
     setNoteError('');
+    setUploadedFiles([]);
     setOpen(false);
   };
 
