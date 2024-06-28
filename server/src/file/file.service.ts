@@ -62,7 +62,7 @@ export class FileService {
       this.s3Client,
       new GetObjectCommand({
         Key: file.filename,
-        Bucket: 'bucket',
+        Bucket: 'testBucket',
       }),
       { expiresIn: 3600 },
     );
@@ -98,7 +98,7 @@ export class FileService {
     try {
       await this.s3Client.send(
         new CreateBucketCommand({
-          Bucket: 'bucket',
+          Bucket: 'testbucket',
         }),
       );
     } catch (e) {}
@@ -115,7 +115,7 @@ export class FileService {
             Body: buffer,
             ContentType: mimetype,
             Key: newFilename,
-            Bucket: 'bucket',
+            Bucket: 'testbucket',
           }),
         );
 

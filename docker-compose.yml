@@ -24,6 +24,3 @@ services:
       - DEFAULT_REGION=eu-west-1
       - AWS_ACCESS_KEY_ID=testkey
       - AWS_SECRET_ACCESS_KEY=testsecret
-
-    volumes:
-      - './my_localstack_init:/docker-entrypoint-initaws.d'
