@@ -10,6 +10,7 @@ export const paperStyle = {
 
 export const gridItemStyle = {
   padding: 2,
+  margin: 2
 };
 
 export const gridContainerStyle = {
