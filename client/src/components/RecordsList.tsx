@@ -23,8 +23,8 @@ function RecordList() {
 
   const { loading, error, data, refetch } = useQuery<RecordsData>(RECORDS_QUERY, { variables: { limit, offset: (page - 1) * limit}});
 
-  if (loading) return <Loading />;
   if (error) return <SomethingWentWrong />;
+  if (loading) return <Loading />;
 
   const handleChange = async (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);

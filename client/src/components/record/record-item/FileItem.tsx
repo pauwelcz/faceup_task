@@ -24,9 +24,9 @@ const FileItem: FC<FileItemProps> = (props) => {
   const { file } = props;
   const { id, filename } = file;
   const { loading, error, data } = useQuery(GENERATE_URL_QUERY, { variables: { id }});
-
-  if (loading) return <Loading />;
+  
   if (error) return <SomethingWentWrong />;
+  if (loading) return <Loading />;
   
   return (
     <Paper style={{...paperStyle, backgroundColor: id % 2 === 0 ? '#afeaed' : '#97ebf0', borderColor: 'black' }}>
