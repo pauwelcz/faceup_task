@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Tooltip, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import React, { useState, FC } from 'react';
+import React, { useState, FC, useRef } from 'react';
 import { UPDATE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
 import { Record } from '../../../types/record-type';
 import EditIcon from '@mui/icons-material/Edit';
@@ -10,11 +10,12 @@ import SaveIcon from '@mui/icons-material/Save';
 import { dialogActionsStyle, gridItemStyle } from '../../../styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { File } from '../../../types/file-type';
+import { File as FileOutput } from '../../../types/file-type';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 type UpdateRecordFormProps = {
   record: Record;
-  files: File[];
+  files: FileOutput[];
   refetch: () => void;
   fileRefetch: () => void;
 };
@@ -40,6 +41,24 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
   const [ageError, setAgeError] = useState('');
   const [updatedFilesToDelete, setUpdatedFilesToDelete] = useState<number[]>([]);
 
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const filesArray = Array.from(files);
+      setUploadedFiles(prevFiles => [...prevFiles, ...filesArray]);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleRemoveFile = (index: number) => {
+    setUploadedFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+  };
+  
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
     if (nameError) {
@@ -88,7 +107,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
 
   const [updateRecord] = useMutation(UPDATE_RECORD_MUTATION);
 
-  const handleUpdate = async (variables: { id: number, name: string; age: string | number; title: string; note: string; updatedFilesToDelete: number[]}) => {
+  const handleUpdate = async (variables: { id: number, name: string; age: string | number; title: string; note: string; updatedFilesToDelete: number[]; files: File[]}) => {
     let valid = true;
 
     if (name === '') {
@@ -113,6 +132,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
 
     if (valid) {
       variables.age = parseInt(age);
+      variables.files = uploadedFiles;
       await updateRecord({variables});
       refetch();
       fileRefetch();
@@ -183,6 +203,38 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
               ))}
             </Grid>
           </Grid>
+          <Grid item style={gridItemStyle}>
+              <strong>Attached files:</strong>
+                {uploadedFiles.map((file, index) => (
+                  <>
+                  <Grid>
+                    <Tooltip key={index} title={`Click to remove ${file.name}`}>
+                      <Button
+                        key={index}
+                        variant="outlined"
+                        onClick={() => handleRemoveFile(index)}
+                      >{file.name}</Button>
+                    </Tooltip>
+                    </Grid>
+                  </>
+                ))}                              
+            </Grid>
+            <Grid item style={gridItemStyle}>
+              <Button 
+                 component="label"
+                 variant="contained"
+                 startIcon={<CloudUploadIcon />}
+               >
+                 Upload file
+                 <input
+                    type="file"
+                    multiple
+                    style={{ display: 'none' }} // Make the file input element invisible
+                    onChange={handleFileChange}
+                    ref={fileInputRef}
+                 />
+              </Button>
+            </Grid>
         </DialogContent>
         <DialogActions style={dialogActionsStyle}>
           <Grid>
@@ -193,13 +245,14 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
           <Grid>
             <Button startIcon={<SaveIcon />} variant='contained' onClick={() => {
               handleUpdate(
-                { 
-                  id, 
-                  name, 
-                  age, 
-                  note, 
-                  title, 
-                  updatedFilesToDelete
+                {
+                  id,
+                  name,
+                  age,
+                  note,
+                  title,
+                  updatedFilesToDelete,
+                  files: uploadedFiles
                 }
               );
             }}>Save</Button>

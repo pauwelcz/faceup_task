@@ -8,7 +8,6 @@ import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import { dialogActionsStyle, gridItemStyle } from '../../../styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 type CreateRecordFormProps = {
   refetch: () => void;
@@ -27,9 +26,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
   const [ageError, setAgeError] = useState('');
 
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
@@ -120,15 +117,9 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
     }
 
     if (valid) {
-      await createRecord({
-        variables: {
-          name,
-          age: parseInt(age),
-          title,
-          note,
-          files: uploadedFiles,
-        },
-      });
+      variables.age = parseInt(age);
+      variables.files = uploadedFiles;
+      await createRecord({variables});
 
       refetch();
       handleClose();
@@ -223,7 +214,15 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
           </Grid>
           <Grid>
             <Button startIcon={<SaveIcon />} variant='contained' onClick={() => {
-              handleCreate({ name, age, note, title, files: uploadedFiles });
+              handleCreate(
+                { 
+                  name, 
+                  age, 
+                  note, 
+                  title, 
+                  files: uploadedFiles 
+                }
+              );
             }}>Create</Button>
           </Grid>
         </DialogActions>

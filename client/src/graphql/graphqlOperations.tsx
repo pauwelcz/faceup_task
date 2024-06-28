@@ -33,6 +33,7 @@ export const UPDATE_RECORD_MUTATION = gql`
     $note: String!
     $age: Int!
     $updatedFilesToDelete: [Int!]!
+    $files: [Upload!]!
   ) {
     updateRecord(
       updateRecordInput: {
@@ -42,7 +43,7 @@ export const UPDATE_RECORD_MUTATION = gql`
         note: $note
         age: $age,
         updatedFilesToDelete: $updatedFilesToDelete,
-        files: []
+        files: $files
       }
     ) {
       ...RecordFields
