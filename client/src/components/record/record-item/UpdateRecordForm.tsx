@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { File as FileOutput } from '../../../types/file-type';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import useDialog from '../../../hooks/useDialog';
 
 type UpdateRecordFormProps = {
   record: Record;
@@ -29,11 +30,7 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
   const [title, setTitle] = useState(record.title);
   const [note, setNote] = useState(record.note);
 
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const { open, handleClickOpen, handleClickClose } = useDialog();
 
   const [nameError, setNameError] = useState('');
   const [titleError, setTitleError] = useState('');
@@ -102,8 +99,13 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
     setTitleError('');
     setAgeError('');
     setNoteError('');
+
+    setTitle(record.title);
+    setName(record.name);
+    setAge(record.age.toString());
+    setNote(record.note);
     setUploadedFiles([]);
-    setOpen(false);
+    handleClickClose()
   };
 
   const [updateRecord] = useMutation(UPDATE_RECORD_MUTATION);

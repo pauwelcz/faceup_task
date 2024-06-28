@@ -14,6 +14,7 @@ import { useQuery } from '@apollo/client';
 import { FILES_BY_RECORD_QUERY } from '../../../graphql/graphqlOperations';
 import Loading from '../../Loading';
 import SomethingWentWrong from '../../SomethingWentWrong';
+import useDialog from '../../../hooks/useDialog';
 
 type RecordDetailsProps = {
   record: Record;
@@ -26,22 +27,15 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
 
   const { loading, error, data, refetch: fileRefetch } = useQuery(FILES_BY_RECORD_QUERY, { variables: { recordId: id }});
 
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const { open, handleClickOpen, handleClickClose } = useDialog();
 
   if (loading) return <Loading />;
   if (error) return <SomethingWentWrong />;
+
   return(
     <> 
       <Button variant='contained' startIcon={<SearchIcon />} onClick={handleClickOpen} >Details</Button>
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={handleClickClose}>
           <Paper style={{backgroundColor: '#02ecfa'}}>
             <DialogTitle>
               <strong>Record details</strong>
@@ -71,9 +65,9 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
               </Paper>
             </DialogContent>
             <DialogActions style={dialogActionsStyle}>
-              <Button variant='contained' startIcon={<CloseIcon />} onClick={handleClose}>Close</Button>
+              <Button variant='contained' startIcon={<CloseIcon />} onClick={handleClickClose}>Close</Button>
               <UpdateRecordForm record={props.record} files={data?.filesByRecord.files} refetch={refetch} fileRefetch={fileRefetch} />
-              <DeleteRecord id={props.record.id} refetch={refetch} handleCloseAfterDelete={handleClose} />
+              <DeleteRecord id={props.record.id} refetch={refetch} handleCloseAfterDelete={handleClickClose} />
             </DialogActions>
           </Paper>
         </Dialog>

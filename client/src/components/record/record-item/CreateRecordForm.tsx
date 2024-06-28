@@ -8,6 +8,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import { dialogActionsStyle, gridItemStyle } from '../../../styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import useDialog from '../../../hooks/useDialog';
 
 type CreateRecordFormProps = {
   refetch: () => void;
@@ -71,10 +72,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
     }
   };
 
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const { open, handleClickOpen, handleClickClose } = useDialog();
 
   const handleClose = () => {
     setAge('');
@@ -87,9 +85,8 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
     setAgeError('');
     setNoteError('');
     setUploadedFiles([]);
-    setOpen(false);
+    handleClickClose();
   };
-
 
   const [createRecord] = useMutation(CREATE_RECORD_MUTATION);
 

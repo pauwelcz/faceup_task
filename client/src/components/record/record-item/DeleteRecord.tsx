@@ -7,6 +7,7 @@ import { REMOVE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import { dialogActionsStyle } from '../../../styles';
+import useDialog from '../../../hooks/useDialog';
 
 type DeleteRecordProps = {
   id: number;
@@ -16,15 +17,8 @@ type DeleteRecordProps = {
 
 const DeleteRecord: FC<DeleteRecordProps> = (props) => {
   const { id, refetch, handleCloseAfterDelete } = props;
-  const [open, setOpen] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const { open, handleClickOpen, handleClickClose } = useDialog();
 
   const [deleteRecord] = useMutation(REMOVE_RECORD_MUTATION);
 
@@ -32,17 +26,17 @@ const DeleteRecord: FC<DeleteRecordProps> = (props) => {
     await deleteRecord({variables: {id}});
 
     refetch();
-    handleClose();
+    handleClickClose();
     handleCloseAfterDelete();
   };
 
   return(   
     <>           
-      <Button variant='contained' startIcon={<DeleteIcon /> } onClick={handleOpen}>Delete</Button>
-        <Dialog open={open} onClose={handleClose}>
+      <Button variant='contained' startIcon={<DeleteIcon /> } onClick={handleClickOpen}>Delete</Button>
+        <Dialog open={open} onClose={handleClickClose}>
           <DialogTitle>Are you sure you want to delete this record?</DialogTitle>
           <DialogActions style={dialogActionsStyle}>
-            <Button variant='contained' startIcon={<CloseIcon />} onClick={handleClose}>Cancel</Button>
+            <Button variant='contained' startIcon={<CloseIcon />} onClick={handleClickClose}>Cancel</Button>
             <Button variant='contained' startIcon={<DeleteIcon />} onClick={() => {
               handleDelete(id);
             }} autoFocus>
