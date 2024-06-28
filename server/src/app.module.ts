@@ -1,12 +1,19 @@
 import { Module } from '@nestjs/common';
 import { RecordModule } from './record/record.module';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriver } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
+    GraphQLModule.forRoot({
+      driver: ApolloDriver,
+      autoSchemaFile: true,
+      playground: true,
+      context: ({ req, res }) => ({ req, res }),
+      upload: false,
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.MYSQL_SQL_HOST || 'localhost',
@@ -18,11 +25,6 @@ import { FileModule } from './file/file.module';
       synchronize: false,
       timezone: 'Z',
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      autoSchemaFile: true,
-      playground: true,
-    }),
     RecordModule,
     FileModule,
   ],
@@ -30,3 +32,7 @@ import { FileModule } from './file/file.module';
   providers: [],
 })
 export class AppModule {}
+function ApolloServerPluginLandingPageLocalDefault(): any {
+  throw new Error('Function not implemented.');
+}
+

@@ -1,12 +1,13 @@
 import { useMutation } from '@apollo/client';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import React, { useState, FC } from 'react';
+import React, { useState, FC, useRef } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { CREATE_RECORD_MUTATION } from '../../../graphql/graphqlOperations';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import { dialogActionsStyle, gridItemStyle } from '../../../styles';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 type CreateRecordFormProps = {
   refetch: () => void;
@@ -23,6 +24,22 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
   const [titleError, setTitleError] = useState('');
   const [noteError, setNoteError] = useState('');
   const [ageError, setAgeError] = useState('');
+
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const filesArray = Array.from(files);
+      setUploadedFiles(prevFiles => [...prevFiles, ...filesArray]);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -67,13 +84,14 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
     setTitleError('');
     setAgeError('');
     setNoteError('');
+    setUploadedFiles([]);
     setOpen(false);
   };
 
 
   const [createRecord] = useMutation(CREATE_RECORD_MUTATION);
 
-  const handleCreate = async (variables: { name: string; age: string | number; title: string; note: string; }) => {
+  const handleCreate = async (variables: { name: string; age: string | number; title: string; note: string; files: File[]}) => {
     let valid = true;
 
     if (name === '') {
@@ -97,8 +115,16 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
     }
 
     if (valid) {
-      variables.age = parseInt(age);
-      await createRecord({variables});
+      await createRecord({
+        variables: {
+          name,
+          age: parseInt(age),
+          title,
+          note,
+          files: uploadedFiles,
+        },
+      });
+
       refetch();
       handleClose();
     }
@@ -151,6 +177,30 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
                 onChange={handleNoteChange}
               />
             </Grid>
+            <Grid item style={gridItemStyle}>
+              <strong>Attached files:</strong>
+              <Grid>
+                {uploadedFiles.map((file, index) => (
+                    <li key={index}>{file.name}</li>
+                ))}
+              </Grid>
+            </Grid>
+            <Grid item style={gridItemStyle}>
+              <Button 
+                 component="label"
+                 variant="contained"
+                 startIcon={<CloudUploadIcon />}
+               >
+                 Upload file
+                 <input
+                    type="file"
+                    multiple
+                    style={{ display: 'none' }} // Make the file input element invisible
+                    onChange={handleFileChange}
+                    ref={fileInputRef}
+                 />
+              </Button>
+            </Grid>
         </DialogContent>
         <DialogActions style={dialogActionsStyle}>
           <Grid>
@@ -160,7 +210,7 @@ const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
           </Grid>
           <Grid>
             <Button startIcon={<SaveIcon />} variant='contained' onClick={() => {
-              handleCreate({ name, age, note, title });
+              handleCreate({ name, age, note, title, files: uploadedFiles });
             }}>Create</Button>
           </Grid>
         </DialogActions>
