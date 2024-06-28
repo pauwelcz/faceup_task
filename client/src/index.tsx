@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink, ApolloLink } from '@apollo/client';
+import { ApolloProvider, ApolloClient, InMemoryCache, ApolloLink } from '@apollo/client';
 import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
 import './index.css';
 import App from './App';
