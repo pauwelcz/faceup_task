@@ -62,7 +62,7 @@ export class FileService {
       this.s3Client,
       new GetObjectCommand({
         Key: file.filename,
-        Bucket: 'testbucket',
+        Bucket: file.bucket,
       }),
       { expiresIn: 3600 },
     );
