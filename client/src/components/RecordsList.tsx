@@ -19,8 +19,8 @@ type RecordsData = {
 };
 
 function RecordList() {
-  const [limit] = useState(10);
-  const [page, setPage] = useState(1);
+  const [limit] = useState<number>(10);
+  const [page, setPage] = useState<number>(1);
 
   const { loading, error, data, refetch } = useQuery<RecordsData>(RECORDS_QUERY, { variables: { limit, offset: (page - 1) * limit}});
 

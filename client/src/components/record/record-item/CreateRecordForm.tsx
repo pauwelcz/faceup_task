@@ -16,15 +16,15 @@ type CreateRecordFormProps = {
 
 const CreateRecordForm: FC<CreateRecordFormProps> = (props) => {
   const { refetch } = props;
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [title, setTitle] = useState('');
-  const [note, setNote] = useState('');
+  const [name, setName] = useState<string>('');
+  const [age, setAge] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [note, setNote] = useState<string>('');
 
-  const [nameError, setNameError] = useState('');
-  const [titleError, setTitleError] = useState('');
-  const [noteError, setNoteError] = useState('');
-  const [ageError, setAgeError] = useState('');
+  const [nameError, setNameError] = useState<string>('');
+  const [titleError, setTitleError] = useState<string>('');
+  const [noteError, setNoteError] = useState<string>('');
+  const [ageError, setAgeError] = useState<string>('');
 
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);

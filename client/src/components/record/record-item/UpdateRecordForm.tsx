@@ -24,18 +24,18 @@ type UpdateRecordFormProps = {
 const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
   const {record, refetch, files, fileRefetch} = props;
 
-  const [id] = useState(record.id);
-  const [name, setName] = useState(record.name);
-  const [age, setAge] = useState((record.age).toString());
-  const [title, setTitle] = useState(record.title);
-  const [note, setNote] = useState(record.note);
+  const [id] = useState<number>(record.id);
+  const [name, setName] = useState<string>(record.name);
+  const [age, setAge] = useState<string>((record.age).toString());
+  const [title, setTitle] = useState<string>(record.title);
+  const [note, setNote] = useState<string>(record.note);
 
   const { open, handleClickOpen, handleClickClose } = useDialog();
 
-  const [nameError, setNameError] = useState('');
-  const [titleError, setTitleError] = useState('');
-  const [noteError, setNoteError] = useState('');
-  const [ageError, setAgeError] = useState('');
+  const [nameError, setNameError] = useState<string>('');
+  const [titleError, setTitleError] = useState<string>('');
+  const [noteError, setNoteError] = useState<string>('');
+  const [ageError, setAgeError] = useState<string>('');
   const [uploadedFilesToDelete, setUpdatedFilesToDelete] = useState<number[]>([]);
 
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
