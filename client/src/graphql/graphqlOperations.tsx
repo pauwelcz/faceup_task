@@ -82,3 +82,9 @@ export const FILES_BY_RECORD_QUERY = gql`
     }
   }
 `;
+
+export const GENERATE_URL_QUERY = gql`
+  query GenerateUrl($id: Int!) {
+    generateUrl(id: $id)
+  }
+`;
