@@ -2,16 +2,16 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 
 @ObjectType()
 export class File {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
+  @Field(() => Int)
   id: number;
 
-  @Field(() => Int, { description: 'Example field (placeholder)' })
+  @Field(() => Int)
   recordId: number;
 
-  @Field({ description: 'Example field (placeholder)' })
+  @Field()
   filename: string;
 
-  @Field({ description: 'Example field (placeholder)' })
+  @Field({ description: 'S3 bucket name, where file is uploaded' })
   bucket: string;
 
   @Field()

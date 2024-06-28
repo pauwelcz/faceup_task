@@ -2,19 +2,19 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 
 @ObjectType()
 export class Record {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
+  @Field(() => Int)
   id: number;
 
-  @Field({ description: 'Example field (placeholder)' })
+  @Field({ description: 'User name' })
   name: string;
 
-  @Field({ nullable: true, description: 'Example field (placeholder)' })
+  @Field({ nullable: true })
   title: string;
 
-  @Field({ nullable: true, description: 'Example field (placeholder)' })
+  @Field({ nullable: true })
   note: string;
 
-  @Field(() => Int, { description: 'Example field (placeholder)' })
+  @Field(() => Int)
   age: number;
 
   @Field()
