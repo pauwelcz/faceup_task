@@ -18,6 +18,11 @@ export class FileResolver {
     return this.fileService.findOne(id);
   }
 
+  @Query(() => String)
+  generateUrl(@Args('id', { type: () => Int }) id: number) {
+    return this.fileService.findOne(id);
+  }
+
   @Query(() => FilesAndCount)
   filesByRecord(@Args('recordId', { type: () => Int }) recordId: number) {
     return this.fileService.findByRecord(recordId);

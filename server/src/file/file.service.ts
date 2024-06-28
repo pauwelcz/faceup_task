@@ -49,7 +49,7 @@ export class FileService {
     return savedFile;
   }
 
-  async findOne(id: number): Promise<File> {
+  async findOne(id: number): Promise<string> {
     const file = await this.filesRepository.findOne({ where: { id } });
 
     if (!file) {
@@ -58,7 +58,16 @@ export class FileService {
       );
     }
 
-    return file;
+    const url = await getSignedUrl(
+      this.s3Client,
+      new GetObjectCommand({
+        Key: file.filename,
+        Bucket: 'bucket',
+      }),
+      { expiresIn: 3600 },
+    );
+
+    return url;
   }
 
   async findByRecord(recordId: number): Promise<FilesAndCount> {
@@ -92,9 +101,7 @@ export class FileService {
           Bucket: 'bucket',
         }),
       );
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
 
     await Promise.all(
       files.map(async (file: any) => {
@@ -110,16 +117,6 @@ export class FileService {
             Key: newFilename,
             Bucket: 'bucket',
           }),
-        );
-
-        // signed url
-        const url = await getSignedUrl(
-          this.s3Client,
-          new GetObjectCommand({
-            Key: newFilename,
-            Bucket: 'bucket',
-          }),
-          { expiresIn: 3600 },
         );
 
         // sending to database
