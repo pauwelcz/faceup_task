@@ -8,6 +8,7 @@ import RecordItem from './record/RecordItem';
 import { Record } from '../types/record-type';
 import { paperStyle } from '../styles';
 import Loading from './Loading';
+import SomethingWentWrong from './SomethingWentWrong';
 
 type RecordsData = {
   records: {
@@ -23,7 +24,7 @@ function RecordList() {
   const { loading, error, data, refetch } = useQuery<RecordsData>(RECORDS_QUERY, { variables: { limit, offset: (page - 1) * limit}});
 
   if (loading) return <Loading />;
-  // if (error) return `Error! ${error}`;
+  if (error) return <SomethingWentWrong />;
 
   const handleChange = async (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);

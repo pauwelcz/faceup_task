@@ -9,6 +9,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { useQuery } from '@apollo/client';
 import { GENERATE_URL_QUERY } from '../../../graphql/graphqlOperations';
 import Loading from '../../Loading';
+import SomethingWentWrong from '../../SomethingWentWrong';
 
 type FileItemProps = {
   file: File;
@@ -25,6 +26,7 @@ const FileItem: FC<FileItemProps> = (props) => {
   const { loading, error, data } = useQuery(GENERATE_URL_QUERY, { variables: { id }});
 
   if (loading) return <Loading />;
+  if (error) return <SomethingWentWrong />;
   
   return (
     <Paper style={{...paperStyle, backgroundColor: id % 2 === 0 ? '#afeaed' : '#97ebf0', borderColor: 'black' }}>

@@ -7,7 +7,8 @@ const Loading: FC = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh'
+        height: '100vh',
+        backgroundColor: "#97ebf0"
     }}>
       <CircularProgress />
     </div>

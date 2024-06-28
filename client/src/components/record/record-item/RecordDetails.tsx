@@ -13,6 +13,7 @@ import AttachedFiles from './AttachedFiles';
 import { useQuery } from '@apollo/client';
 import { FILES_BY_RECORD_QUERY } from '../../../graphql/graphqlOperations';
 import Loading from '../../Loading';
+import SomethingWentWrong from '../../SomethingWentWrong';
 
 type RecordDetailsProps = {
   record: Record;
@@ -36,6 +37,7 @@ const RecordDetails: FC<RecordDetailsProps> = (props) => {
   };
 
   if (loading) return <Loading />;
+  if (error) return <SomethingWentWrong />;
   return(
     <> 
       <Button variant='contained' startIcon={<SearchIcon />} onClick={handleClickOpen} >Details</Button>
