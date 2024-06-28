@@ -24,11 +24,6 @@ export class RecordResolver {
     return this.recordService.findAll(args);
   }
 
-  @Query(() => Record, { name: 'record' })
-  findOne(@Args('id', { type: () => Int }) id: number): Promise<Record> {
-    return this.recordService.findOne(id);
-  }
-
   @Mutation(() => Record)
   updateRecord(
     @Args('updateRecordInput') updateRecordInput: UpdateRecordInput,

@@ -7,11 +7,6 @@ import { FilesAndCount } from './dto/files.output';
 export class FileResolver {
   constructor(private readonly fileService: FileService) {}
 
-  @Query(() => File)
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.fileService.findOne(id);
-  }
-
   @Query(() => String)
   generateUrl(@Args('id', { type: () => Int }) id: number) {
     return this.fileService.findOne(id);
