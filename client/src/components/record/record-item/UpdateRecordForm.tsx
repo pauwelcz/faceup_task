@@ -194,8 +194,8 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
               <Typography><strong>Uploaded files</strong></Typography>
             </Grid>
             <Grid>
-              {files.map((file) => (
-                <Grid>
+              {files.map((file, index) => (
+                <Grid key={index}>
                   <Checkbox 
                     icon={<DeleteOutlineOutlinedIcon />}
                     checkedIcon={<DeleteIcon />} 
@@ -210,8 +210,8 @@ const UpdateRecordForm: FC<UpdateRecordFormProps> = (props) => {
               <strong>Attached files:</strong>
                 {uploadedFiles.map((file, index) => (
                   <>
-                  <Grid>
-                    <Tooltip key={index} title={`Click to remove ${file.name}`}>
+                  <Grid key={index}>
+                    <Tooltip  title={`Click to remove ${file.name}`}>
                       <Button
                         key={index}
                         variant="outlined"

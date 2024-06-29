@@ -40,8 +40,10 @@ function RecordList() {
       <Paper style={paperStyle} >
         <Header refetch={refetch} />
         <Paper style={{...paperStyle, backgroundColor: COLORS.primary}} >
-        {data?.records.records.map((record) => (
-          <RecordItem record={record} refetch={refetch}/>
+        {data?.records.records.map((record, index) => (
+          <div key={index}>
+            <RecordItem record={record} refetch={refetch}/>
+          </div>
         ))}
         </Paper>
         <Paper style={{...paperStyle, backgroundColor: COLORS.primary }}>
