@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { ApolloProvider, ApolloClient, InMemoryCache, ApolloLink } from '@apollo/client';
 import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
 import './index.css';
@@ -27,11 +27,13 @@ const client = new ApolloClient({
   cache: new InMemoryCache(), 
 });
 
-ReactDOM.render(
+const container = document.getElementById('root');
+const root = createRoot(container!);
+
+root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <App />
     </ApolloProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
