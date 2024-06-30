@@ -35,18 +35,18 @@ function RecordList() {
   };
 
   return (
-    <Paper style={{...paperStyle, backgroundColor: "#97ebf0" }} >
+    <Paper style={{...paperStyle, backgroundColor: "#97ebf0", height: '90vh', width: '90%', margin: 'auto', display: 'flex', flexDirection: 'column'}} >
       <h2>Records</h2>  
-      <Paper style={paperStyle} >
+      <Paper style={{...paperStyle, flex: 1, display: 'flex', flexDirection: 'column'}} >
         <Header refetch={refetch} />
-        <Paper style={{...paperStyle, backgroundColor: COLORS.primary}} >
+        <Paper style={{...paperStyle, backgroundColor: COLORS.primary, flex: 1, overflowY: 'auto'}} >
         {data?.records.records.map((record, index) => (
           <div key={index}>
             <RecordItem record={record} refetch={refetch}/>
           </div>
         ))}
         </Paper>
-        <Paper style={{...paperStyle, backgroundColor: COLORS.primary }}>
+        <Paper style={{...paperStyle, backgroundColor: COLORS.primary, marginTop: 'auto' }}>
           <Pagination count={Math.ceil((data?.records?.totalNumber ?? 0) / limit)} page={page} onChange={handleChange} />
         </Paper>
       </Paper>
